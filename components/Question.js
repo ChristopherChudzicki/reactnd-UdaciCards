@@ -1,64 +1,88 @@
 import React from 'react'
-import { Text } from 'react-native'
-import styled from "styled-components/native";
-import { lightBlue, lightOrange, lightGray } from '../utils/colors'
-import { Button } from './helpers'
+import { Card, Button } from 'react-native-elements'
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
+import { gray, blue, orange } from '../utils/colors'
 import PropTypes from 'prop-types'
-
-const QuestionContainer = styled.View`
-  align-items:center;
-  justify-content:space-around;
-  flex:1;
-`
-
-const PromptCard = styled.View`
-  background-color:${lightGray};
-  border-radius:5px;
-  align-self:stretch;
-  align-items:center;
-  justify-content:center;
-  margin:20px;
-  flex:2;
-`
-
-const Grader = styled.View`
-  flex:1;
-`
-const GraderPrompt = styled.View`
-  margin:5px;
-`
-const GraderButtonHolder = styled.View`
-  flex-direction:row;
-`
-
-
-export default function Question (props) {
-  return (
-    <QuestionContainer>
-      <PromptCard>
-        <Text style={{fontSize:24}}>
-          {props.questionText}
-        </Text>
-      </PromptCard>
-      <Grader>
-        <GraderPrompt>
-          <Text>Correct?</Text>
-        </GraderPrompt>
-        <GraderButtonHolder>
-          <Button backgroundColor={lightBlue} onPress={props.onMarkCorrect}>
-            <Text style={{fontSize:30}}>Yes</Text>
-          </Button>
-          <Button backgroundColor={lightOrange} onPress={props.onMarkIncorrect}>
-            <Text style={{fontSize:30}}>No</Text>
-          </Button>
-        </GraderButtonHolder>
-      </Grader>
-    </QuestionContainer>
-  )
-}
 
 Question.propTypes = {
   onMarkCorrect: PropTypes.func.isRequired,
   onMarkIncorrect: PropTypes.func.isRequired,
   questionText: PropTypes.string.isRequired,
+  numberIs: PropTypes.number.isRequired,
+  numberTotal: PropTypes.number.isRequired,
 }
+
+export default function Question(props){
+  return (
+    <View style={styles.container}>
+      <Card
+        title={`Question ${props.numberIs} of ${props.numberTotal}`}
+        titleStyle={styles.title}
+        containerStyle={styles.cardOuterContainer}
+        wrapperStyle={styles.cardInnerContainer}
+      >
+        <View style={{flex:1, justifyContent:'center'}}>
+          <Text style={styles.question}>
+            {props.questionText}
+          </Text>
+        </View>
+      </Card>
+      <View style={styles.buttonContainer}>
+        <Button
+          large
+          raised
+          title='Yes'
+          style={styles.grader}
+          textStyle={styles.graderText}
+          backgroundColor={blue}
+          Component={TouchableOpacity}
+          onPress={props.onMarkCorrect}
+        />
+        <Button
+          large
+          raised
+          title='Yes'
+          style={styles.grader}
+          textStyle={styles.graderText}
+          backgroundColor={orange}
+          Component={TouchableOpacity}
+          onPress={props.onMarkIncorrect}
+        />
+      </View>
+    </View>
+  )
+}
+
+const styles = StyleSheet.create({
+  container:{
+    flex:1,
+  },
+  title: {
+    color:gray,
+    fontSize:16,
+  },
+  question: {
+    fontSize:24,
+    textAlign:'center',
+  },
+  cardOuterContainer: {
+    flex:2,
+  },
+  cardInnerContainer: {
+    flex:1,
+    justifyContent: 'center'
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    flex:1,
+    justifyContent:'center',
+    alignItems:'center'
+  },
+  grader: {
+    width:125,
+  },
+  graderText: {
+    fontWeight: '800',
+    fontSize: 24
+  }
+})
