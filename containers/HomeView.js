@@ -1,13 +1,23 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { View, Text } from 'react-native'
+import { View } from 'react-native'
 import DeckSummaries from '../components/DeckSummaries'
 import MenuBar from '../components/MenuBar'
 import PropTypes from 'prop-types'
+import { startQuiz } from '../actions/quiz'
 
 class HomeView extends Component {
   static propTypes = {
-    deckList: PropTypes.array.isRequired
+    deckList: PropTypes.array.isRequired,
+    startQuiz: PropTypes.func.isRequired
+  }
+
+  startQuiz(id){
+
+    this.props.startQuiz(id)
+
+    // change page
+    // set activity
   }
 
   render(){
@@ -16,7 +26,7 @@ class HomeView extends Component {
         <MenuBar title="Home" />
         <DeckSummaries
           deckList={this.props.deckList}
-          onPressHandler={(id)=>alert(`Pressed Deck ${id}`)}
+          onPressHandler={(id)=>this.startQuiz(id)}
           onPressSettingsHandler={(id)=>alert(`Settings for Deck ${id}`)}
           editMode={true}
         />
@@ -26,9 +36,13 @@ class HomeView extends Component {
 }
 
 const mapStateToProps = state => ({
-  deckList: Object.keys(state.decks.data).map(
-    id => ({...state.decks.data[id], id})
+  deckList: Object.keys(state.decks).map(
+    id => ({...state.decks[id], id})
   )
 })
 
-export default connect(mapStateToProps, null)(HomeView)
+const mapDispatchToProps = {
+  startQuiz
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeView)

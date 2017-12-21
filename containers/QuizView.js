@@ -1,17 +1,10 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { View } from 'react-native'
 import Question from '../components/Question'
 import MenuBar from '../components/MenuBar'
 
 class QuizView extends Component {
-  state = {
-    decks: [
-      {id: 'id0', title: "Title 0", numQuestions:6},
-      {id: 'id1', title: "Title 1", numQuestions:4},
-      {id: 'id2', title: "Title 2", numQuestions:7},
-      {id: 'id3', title: "Title 3", numQuestions:8}
-    ]
-  }
 
   render(){
     return (
@@ -29,4 +22,11 @@ class QuizView extends Component {
   }
 }
 
-export default QuizView
+const mapStateToProps = (state) => {
+  return {
+    deck: state.decks[state.quiz.activeDeckId],
+    questionIdx: state.quiz.activeQuestionIdx
+  }
+}
+
+export default connect(mapStateToProps)(QuizView)
