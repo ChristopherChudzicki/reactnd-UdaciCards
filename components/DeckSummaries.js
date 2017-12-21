@@ -5,7 +5,7 @@ import { lightBlue } from '../utils/colors'
 import PropTypes from 'prop-types'
 
 DeckSummaries.propTypes = {
-  decks: PropTypes.array.isRequired,
+  deckList: PropTypes.array.isRequired,
   editMode: PropTypes.bool.isRequired,
   onPressHandler: PropTypes.func.isRequired,
   onPressSettingsHandler: PropTypes.func.isRequired
@@ -15,12 +15,12 @@ export default function DeckSummaries(props){
   return (
     <List style={{flex:1}}>
       <FlatList
-        data={props.decks}
+        data={props.deckList}
         keyExtractor={(item) => item.id}
         renderItem={({item}) => (
           <ListItem
             title={item.title}
-            subtitle={`${item.numQuestions} Questions`}
+            subtitle={`${item.questions.length} Questions`}
             onPress={()=>props.onPressHandler(item.id)}
             underlayColor={lightBlue}
             leftIcon={props.editMode && {name:'settings', style:styles.shadow}}

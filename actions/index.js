@@ -1,6 +1,4 @@
-export const REQUEST_DECKS = 'REQUEST_DECKS'
 export const RECEIVE_DECKS = 'RECEIVE_DECKS'
-
 export const ADD_DECK = 'ADD_DECK'
 export const REMOVE_DECK = 'REMOVE_DECK'
 export const EDIT_DECK = 'EDIT_DECK'

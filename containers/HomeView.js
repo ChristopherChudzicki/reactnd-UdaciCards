@@ -1,16 +1,13 @@
 import React, { Component } from 'react'
-import { View } from 'react-native'
+import { connect } from 'react-redux'
+import { View, Text } from 'react-native'
 import DeckSummaries from '../components/DeckSummaries'
 import MenuBar from '../components/MenuBar'
+import PropTypes from 'prop-types'
 
 class HomeView extends Component {
-  state = {
-    decks: [
-      {id: 'id0', title: "Title 0", numQuestions:6},
-      {id: 'id1', title: "Title 1", numQuestions:4},
-      {id: 'id2', title: "Title 2", numQuestions:7},
-      {id: 'id3', title: "Title 3", numQuestions:8}
-    ]
+  static propTypes = {
+    deckList: PropTypes.array.isRequired
   }
 
   render(){
@@ -18,7 +15,7 @@ class HomeView extends Component {
       <View style={{flex:1}}>
         <MenuBar title="Home" />
         <DeckSummaries
-          decks={this.state.decks}
+          deckList={this.props.deckList}
           onPressHandler={(id)=>alert(`Pressed Deck ${id}`)}
           onPressSettingsHandler={(id)=>alert(`Settings for Deck ${id}`)}
           editMode={true}
@@ -28,4 +25,10 @@ class HomeView extends Component {
   }
 }
 
-export default HomeView
+const mapStateToProps = state => ({
+  deckList: Object.keys(state.decks.data).map(
+    id => ({...state.decks.data[id], id})
+  )
+})
+
+export default connect(mapStateToProps, null)(HomeView)

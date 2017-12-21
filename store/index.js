@@ -1,16 +1,13 @@
-import { createStore, applyMiddleware, compose } from 'redux'
-import thunk from 'redux-thunk'
+import { createStore, applyMiddleware } from 'redux'
+import { composeWithDevTools } from 'remote-redux-devtools';
 import rootReducer from '../reducers'
 
 const initialState = {}
-const enhancers = []
-const middleware = [
-  thunk
-]
+const middleware = []
 
-const composedEnhancers = compose(
+// Dev tools debugger at http://remotedev.io/local/
+const composedEnhancers = composeWithDevTools(
   applyMiddleware(...middleware),
-  ...enhancers
 )
 
 const store = createStore(
