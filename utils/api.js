@@ -7,7 +7,7 @@ export function fetchDecksAsync() {
 }
 
 export function clearDecksAsync(){
-  return AsyncStorage.setItem(DECK_STORAGE_KEY, null)
+  return AsyncStorage.removeItem(DECK_STORAGE_KEY)
 }
 
 export function resetDecksToDummyAsync(){

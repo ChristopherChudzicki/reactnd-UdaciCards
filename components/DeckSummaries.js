@@ -12,6 +12,7 @@ DeckSummaries.propTypes = {
 }
 
 export default function DeckSummaries(props){
+
   return (
     <List style={{flex:1}}>
       <FlatList
@@ -20,7 +21,7 @@ export default function DeckSummaries(props){
         renderItem={({item}) => (
           <ListItem
             title={item.title}
-            subtitle={`${item.questions.length} Questions`}
+            subtitle={`${Object.keys(item.questions).length} Questions`}
             onPress={()=>props.onPressHandler(item.id)}
             underlayColor={lightBlue}
             leftIcon={props.editMode && {name:'settings', style:styles.shadow}}

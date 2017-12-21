@@ -4,7 +4,7 @@ import { View } from 'react-native'
 import HomeView from './HomeView'
 import QuizView from './QuizView'
 import { receiveDecks } from '../actions/decks'
-import { fetchDecksAsync } from '../utils/api'
+import { fetchDecksAsync, clearDecksAsync, resetDecksToDummyAsync } from '../utils/api'
 import PropTypes from 'prop-types'
 
 class Main extends Component {
@@ -13,6 +13,7 @@ class Main extends Component {
   }
 
   componentDidMount(){
+    resetDecksToDummyAsync()
     fetchDecksAsync()
       .then( decks => this.props.receiveDecks(decks) )
   }
