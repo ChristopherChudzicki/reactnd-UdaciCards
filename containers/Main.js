@@ -28,7 +28,7 @@ const MainNavigator = StackNavigator({
   initialRouteName: 'Home',
   navigationOptions: {
     header: null,
-    gesturesEnabled: false,
+    gesturesEnabled: false
   }
 })
 
