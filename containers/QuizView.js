@@ -21,13 +21,13 @@ class QuizView extends Component {
       return this.showLoading()
     }
 
-    const question = questions[order[activeQuestionIndex]]
+    const {question, answer} = questions[order[activeQuestionIndex]]
 
     return (
       <View style={{flex:1}}>
         <MenuBar title={title} />
         <Question
-          questionText={question.question}
+          questionText={question}
           numberIs={activeQuestionIndex}
           numberTotal={Object.keys(questions).length}
           onMarkCorrect={()=>{alert("Correct!")}}
