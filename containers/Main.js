@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Provider, connect } from 'react-redux'
+import { connect } from 'react-redux'
 import { View } from 'react-native'
 import { StackNavigator } from 'react-navigation'
 import HomeView from './HomeView'

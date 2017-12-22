@@ -11,17 +11,21 @@ class QuizView extends Component {
     title: PropTypes.string.isRequired,
     questions: PropTypes.object.isRequired,
     activeQuestionIndex: PropTypes.number.isRequired,
-    order: PropTypes.array.isRequired
+    order: PropTypes.array.isRequired,
+    navigation: PropTypes.object.isRequired
   }
 
   render(){
-    const {activeQuestionIndex, questions, order, title} = this.props
+    const {activeQuestionIndex, questions, order, title, navigation} = this.props
 
     const {question, answer} = questions[order[activeQuestionIndex]]
 
     return (
       <View style={{flex:1}}>
-        <MenuBar title={title} />
+        <MenuBar
+          title={title}
+          onPressRight={()=>navigation.navigate('Home')}
+        />
         <Question
           questionText={question}
           answerText={answer}

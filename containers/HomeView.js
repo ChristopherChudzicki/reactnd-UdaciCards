@@ -25,7 +25,10 @@ class HomeView extends Component {
 
     return (
       <View style={{flex:1}}>
-        <MenuBar title="Home" />
+        <MenuBar
+          title="Home"
+          onPressRight={()=>{}}
+        />
         <DeckSummaries
           deckList={this.props.deckList}
           onPressHandler={(id)=>this.startQuiz(id)}
