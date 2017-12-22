@@ -28,6 +28,8 @@ class QuizView extends Component {
         <MenuBar title={title} />
         <Question
           questionText={question}
+          answerText={answer}
+          showAnswer={true}
           numberIs={activeQuestionIndex}
           numberTotal={Object.keys(questions).length}
           onMarkCorrect={()=>{alert("Correct!")}}
