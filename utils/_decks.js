@@ -4,78 +4,78 @@ export const DECK_STORAGE_KEY = 'UdaciCards:decks'
 
 function genMultQuestions(start=1, stop=10){
   const questions = {}
+  const order = []
   for (let j=start; j <= stop; j++){
     for (let k=start; k <= stop; k++){
-      questions[uuid()] = {
+      let id = uuid()
+      questions[id] = {
         question: `What is ${j}*${k}?`,
         answer: `${j*k}`
       }
+      order.push(id)
     }
   }
-  return questions
+  return {title: 'Practice Multiplication', questions, order}
 }
 
 function genSumQuestions(start=1, stop=10){
   const questions = {}
+  let order = []
   for (let j=start; j <= stop; j++){
     for (let k=start; k <= stop; k++){
-      questions[uuid()] = {
+      let id = uuid()
+      questions[id] = {
         question: `What is ${j} + ${k}?`,
         answer: `${j+k}`
       }
+      order.push(id)
     }
   }
-  return questions
+  return {title: 'Practice Addition', questions, order}
 }
 
 function genPowQuestions(start=1, stop=10){
   const questions = {}
+  let order = []
   for (let j=start; j <= stop; j++){
     for (let k=start; k <= stop; k++){
-      questions[uuid()] = {
+      let id = uuid()
+      questions[id] = {
         question: `What is ${j}^${k}?`,
-        answer: `${j+k}`
+        answer: `${j**k}`
       }
+      order.push(id)
     }
   }
-  return questions
+  return {title: 'Practice Exponents', questions, order}
 }
 
 function genDivQuestions(start=1, stop=10){
   const questions = {}
+  let order = []
   for (let j=start; j <= stop; j++){
     for (let k=j; k <= stop; k++){
-      questions[uuid()] = {
-        question: `What is ${k*j}/${j}?`,
+      let id = uuid()
+      questions[id] = {
+        question: `What is ${j*k}/${j}?`,
         answer: `${k}`
       }
+      order.push(id)
     }
   }
-  return questions
+  return {title: 'Practice Division', questions, order}
 }
 
 export function generateDummyDecks(){
   const decks = {}
 
-  decks[uuid()] = {
-    title: 'Practice Multiplication',
-    questions: genMultQuestions(1, 12)
-  }
+  decks[uuid()] = genMultQuestions(1, 12)
 
-  decks[uuid()] = {
-    title: 'Practice Division',
-    questions: genDivQuestions(1, 10)
-  }
+  decks[uuid()] = genDivQuestions(1, 10)
 
-  decks[uuid()] = {
-    title: 'Practice Exponents',
-    questions: genPowQuestions(2, 6)
-  }
+  decks[uuid()] = genPowQuestions(2, 6)
 
-  decks[uuid()] = {
-    title: 'Practice Addition',
-    questions: genSumQuestions(2, 10)
-  }
+  decks[uuid()] = genSumQuestions(2, 10)
 
   return JSON.stringify(decks)
 }

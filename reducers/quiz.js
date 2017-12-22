@@ -2,7 +2,7 @@ import { START_QUIZ } from '../actions'
 
 const initialState = {
   activeDeckId: null,
-  activeQuestionIdx: null,
+  activeQuestionIndex: null,
   grades: {}
 }
 
@@ -12,7 +12,7 @@ export default function quiz(state=initialState, action){
       return {
         ...state,
         activeDeckId: action.payload.id,
-        activeQuestionIdx: 0
+        activeQuestionIndex: 0
       }
     default:
       return state

@@ -9,18 +9,20 @@ import { startQuiz } from '../actions/quiz'
 class HomeView extends Component {
   static propTypes = {
     deckList: PropTypes.array.isRequired,
-    startQuiz: PropTypes.func.isRequired
+    startQuiz: PropTypes.func.isRequired,
+    navigation: PropTypes.object.isRequired
   }
 
   startQuiz(id){
 
     this.props.startQuiz(id)
+    this.props.navigation.navigate('Quiz')
 
-    // change page
     // set activity
   }
 
   render(){
+
     return (
       <View style={{flex:1}}>
         <MenuBar title="Home" />

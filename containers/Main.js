@@ -1,11 +1,36 @@
 import React, { Component } from 'react'
 import { Provider, connect } from 'react-redux'
 import { View } from 'react-native'
+import { StackNavigator } from 'react-navigation'
 import HomeView from './HomeView'
 import QuizView from './QuizView'
 import { receiveDecks } from '../actions/decks'
-import { fetchDecksAsync, clearDecksAsync, resetDecksToDummyAsync } from '../utils/api'
+import { fetchDecksAsync, resetDecksToDummyAsync } from '../utils/api'
 import PropTypes from 'prop-types'
+
+const MainNavigator = StackNavigator({
+  Home: {
+    screen: HomeView
+  },
+  Quiz: {
+    screen: QuizView
+  }
+  // EntryDetail: {
+  //   screen: EntryDetail,
+  //   navigationOptions: {
+  //     headerTintColor: white,
+  //     headerStyle: {
+  //       backgroundColor: purple,
+  //     }
+  //   }
+  // }
+}, {
+  initialRouteName: 'Home',
+  navigationOptions: {
+    header: null,
+    gesturesEnabled: false,
+  }
+})
 
 class Main extends Component {
   static propTypes = {
@@ -13,16 +38,21 @@ class Main extends Component {
   }
 
   componentDidMount(){
-    resetDecksToDummyAsync()
     fetchDecksAsync()
-      .then( decks => this.props.receiveDecks(decks) )
+      .then( decks => {
+        if (decks === null){
+          alert("Seeding Local Storage")
+          return resetDecksToDummyAsync().then( fetchDecksAsync )
+        }
+        return decks
+      })
+      .then( this.props.receiveDecks )
   }
 
   render(){
     return (
       <View style={{flex:1}}>
-        <HomeView />
-        <QuizView />
+        <MainNavigator/>
       </View>
     )
   }
