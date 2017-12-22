@@ -11,19 +11,25 @@ MenuBar.propTypes = {
 
 export default function MenuBar(props){
   return (
-    <Header backgroundColor={darkBlue}>
-      <Icon
-        name='menu'
-        color={white}
-      />
-      <Text style={{color:white}}>
-        {props.title}
-      </Text>
-      <Icon
-        name='home'
-        color={white}
-        onPress={() => props.onPressRight()}
-      />
-    </Header>
+    <Header backgroundColor={darkBlue}
+      leftComponent={
+        <Icon
+          name='menu'
+          color={white}
+        />
+      }
+      centerComponent={
+        <Text style={{color:white}}>
+          {props.title}
+        </Text>
+      }
+      rightComponent={
+        <Icon
+          name='home'
+          color={white}
+          onPress={() => props.onPressRight()}
+        />
+      }
+    />
   )
 }
