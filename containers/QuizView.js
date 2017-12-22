@@ -1,25 +1,21 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { View, ActivityIndicator } from 'react-native'
+import { View } from 'react-native'
 import Question from '../components/Question'
 import MenuBar from '../components/MenuBar'
+import PropTypes from 'prop-types'
 
 class QuizView extends Component {
 
-  showLoading(){
-    return (
-      <View style={{flex:1}}>
-        <ActivityIndicator />
-      </View>
-    )
+  static propTypes = {
+    title: PropTypes.string.isRequired,
+    questions: PropTypes.object.isRequired,
+    activeQuestionIndex: PropTypes.number.isRequired,
+    order: PropTypes.array.isRequired
   }
 
   render(){
     const {activeQuestionIndex, questions, order, title} = this.props
-
-    if (!questions){
-      return this.showLoading()
-    }
 
     const {question, answer} = questions[order[activeQuestionIndex]]
 
