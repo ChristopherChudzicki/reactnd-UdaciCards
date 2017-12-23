@@ -8,6 +8,8 @@ import { receiveDecks } from '../actions/decks'
 import { fetchDecksAsync, resetDecksToDummyAsync } from '../utils/api'
 import PropTypes from 'prop-types'
 
+// End Temp
+
 const MainNavigator = StackNavigator({
   Home: {
     screen: HomeView
@@ -15,15 +17,6 @@ const MainNavigator = StackNavigator({
   Quiz: {
     screen: QuizView
   }
-  // EntryDetail: {
-  //   screen: EntryDetail,
-  //   navigationOptions: {
-  //     headerTintColor: white,
-  //     headerStyle: {
-  //       backgroundColor: purple,
-  //     }
-  //   }
-  // }
 }, {
   initialRouteName: 'Home',
   navigationOptions: {

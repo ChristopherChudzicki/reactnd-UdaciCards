@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import { Button } from 'react-native-elements'
-import { View, TouchableOpacity, StyleSheet } from 'react-native'
+import { View, TouchableOpacity, StyleSheet, Text } from 'react-native'
 import { gray, blue, orange, darkBlue } from '../utils/colors'
 import PropTypes from 'prop-types'
 import FlashCard from './FlashCard'
@@ -13,7 +13,6 @@ BigButton.propTypes = {
 function BigButton(props){
   return (
     <Button
-      large
       raised
       title={props.title}
       style={styles.button}
@@ -70,26 +69,26 @@ export default class Question extends Component {
             />
           }
         </View>
-        <View style={styles.buttonsContainer}>
+        <View style={styles.controlsContainer}>
+          <View>
+            <Text style={styles.graderPrompt}>Know it?</Text>
+          </View>
           <View style={styles.graderButtons}>
-            {showAnswer &&
-              <BigButton
-                title='Yes'
-                backgroundColor={blue}
-                onPress={onMarkCorrect}
-              />
-            }
-            {showAnswer &&
-              <BigButton
-                title='No'
-                backgroundColor={orange}
-                onPress={onMarkIncorrect}
-              />
-            }
+            <BigButton
+              title='Yes'
+              backgroundColor={blue}
+              onPress={onMarkCorrect}
+            />
+            <BigButton
+              title='No'
+              backgroundColor={orange}
+              onPress={onMarkIncorrect}
+            />
           </View>
           <View style={{flex:1}}>
-            <BigButton
-              title='Toggle Answer'
+            <Button
+              title={showAnswer ? 'Hide Answer' : 'Show Answer'}
+              textStyle={styles.toggleText}
               backgroundColor={darkBlue}
               onPress={this.toggleAnswer}
             />
@@ -124,7 +123,7 @@ const styles = StyleSheet.create({
     flex:1,
     justifyContent: 'space-around'
   },
-  buttonsContainer: {
+  controlsContainer: {
     flex:1,
     justifyContent: 'space-around',
     alignItems: 'center'
@@ -135,7 +134,13 @@ const styles = StyleSheet.create({
     alignItems:'center'
   },
   button: {
-    width:125,
+    minWidth:125,
+    marginLeft:10,
+    marginRight:10
+  },
+  graderPrompt:{
+    fontSize:18,
+    marginTop:10
   },
   graderText: {
     fontWeight: '800',
