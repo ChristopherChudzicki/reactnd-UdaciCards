@@ -2,30 +2,28 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { View } from 'react-native'
 import Question from '../components/Question'
-import MenuBar from '../components/MenuBar'
 import PropTypes from 'prop-types'
 import Swiper from 'react-native-swiper'
+import shuffle from 'shuffle-array'
 
-class QuizView extends Component {
+
+class QuizContentView extends Component {
 
   static propTypes = {
-    title: PropTypes.string.isRequired,
     questions: PropTypes.object.isRequired,
     order: PropTypes.array.isRequired,
     navigation: PropTypes.object.isRequired
   }
 
-
+  static navigationOptions = ({navigation}) => ({
+    title: navigation.state.params.title
+  })
 
   render(){
-    const { questions, order, title, navigation } = this.props
+    const { questions, order } = this.props
 
     return (
       <View style={{flex:1}}>
-        <MenuBar
-          title={title}
-          onPressRight={()=>navigation.navigate('Home')}
-        />
         <Swiper
           showsButtons={true}
           loadMinimal={true}
@@ -54,14 +52,12 @@ class QuizView extends Component {
 
 const mapStateToProps = ({decks, quiz}) => {
 
-  const deck = quiz.activeDeckId ? decks[quiz.activeDeckId] : {}
-
-  const {questions, order, title} = deck
+  const {questions, order} = decks[quiz.activeDeckId]
   return {
-    title,
     questions,
-    order
+    order: quiz.isRandomOrder ? shuffle(order, {copy:true}) : order,
+    grades: quiz.grades
   }
 }
 
-export default connect(mapStateToProps)(QuizView)
+export default connect(mapStateToProps)(QuizContentView)

@@ -3,25 +3,36 @@ import { connect } from 'react-redux'
 import { View } from 'react-native'
 import { StackNavigator } from 'react-navigation'
 import HomeView from './HomeView'
-import QuizView from './QuizView'
+import QuizFrontView from './QuizFrontView'
+import QuizContentView from './QuizContentView'
 import { receiveDecks } from '../actions/decks'
 import { fetchDecksAsync, resetDecksToDummyAsync } from '../utils/api'
 import PropTypes from 'prop-types'
+import { white, darkBlue } from '../utils/colors'
+
 
 // End Temp
 
 const MainNavigator = StackNavigator({
   Home: {
-    screen: HomeView
+    screen: HomeView,
+    navigationOptions: {
+      headerTitle: 'Home'
+    }
   },
-  Quiz: {
-    screen: QuizView
+  QuizFront: {
+    screen: QuizFrontView
+  },
+  QuizContent: {
+    screen: QuizContentView
   }
 }, {
   initialRouteName: 'Home',
   navigationOptions: {
-    header: null,
-    gesturesEnabled: false
+    headerStyle:{backgroundColor:darkBlue},
+    gesturesEnabled: false,
+    headerTintColor: white,
+    headerBackTitle: null,
   }
 })
 

@@ -1,6 +1,10 @@
-import { START_QUIZ } from './index'
+import { ACTIVATE_QUIZ, TOGGLE_RANDOMIZE_QUESTION_ORDER } from './index'
 
-export const startQuiz = (id) => ({
-  type: START_QUIZ,
+export const activateQuiz = (id) => ({
+  type: ACTIVATE_QUIZ,
   payload: {id}
+})
+
+export const toggleRandomizeQuestionOrder = () => ({
+  type: TOGGLE_RANDOMIZE_QUESTION_ORDER
 })
