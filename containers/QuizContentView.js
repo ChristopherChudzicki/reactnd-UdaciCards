@@ -5,14 +5,19 @@ import Question from '../components/Question'
 import PropTypes from 'prop-types'
 import Swiper from 'react-native-swiper'
 import shuffle from 'shuffle-array'
-
+import { submitQuestionScore } from '../actions/quiz'
+import QuizSummary from './QuizSummary'
 
 class QuizContentView extends Component {
+
+  state = {
+  }
 
   static propTypes = {
     questions: PropTypes.object.isRequired,
     order: PropTypes.array.isRequired,
-    navigation: PropTypes.object.isRequired
+    navigation: PropTypes.object.isRequired,
+    submitQuestionScore: PropTypes.func.isRequired
   }
 
   static navigationOptions = ({navigation}) => ({
@@ -20,15 +25,13 @@ class QuizContentView extends Component {
   })
 
   render(){
-    const { questions, order } = this.props
-
+    const { questions, order, grades } = this.props
     return (
       <View style={{flex:1}}>
         <Swiper
           showsButtons={true}
           loadMinimal={true}
-          showsPagination={false}
-          onChangeIndexChanged={this.handleIndexChanged}>
+          showsPagination={false}>
           {order.map((id, index) => {
             const {question, answer} = questions[id]
             return (
@@ -36,11 +39,10 @@ class QuizContentView extends Component {
                 key={id}
                 questionText={question}
                 answerText={answer}
-                showAnswer={true}
                 numberIs={index}
-                numberTotal={Object.keys(questions).length}
-                onMarkCorrect={(id)=>{alert(`Mark ${id} Correct`)}}
-                onMarkIncorrect={(id)=>{alert(`Mark ${id} Incorrect`)}}
+                numberTotal={order.length}
+                onMarkQuestionCorrect={()=>this.props.submitQuestionScore({id, isCorrect:true})}
+                onMarkQuestionIncorrect={()=>this.props.submitQuestionScore({id, isCorrect:false})}
               />
             )
           })}
@@ -56,8 +58,11 @@ const mapStateToProps = ({decks, quiz}) => {
   return {
     questions,
     order: quiz.isRandomOrder ? shuffle(order, {copy:true}) : order,
-    grades: quiz.grades
   }
 }
 
-export default connect(mapStateToProps)(QuizContentView)
+const mapDispatchToProps = {
+  submitQuestionScore: submitQuestionScore
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(QuizContentView)

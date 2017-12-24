@@ -27,8 +27,8 @@ function BigButton(props){
 export default class Question extends Component {
 
   static propTypes = {
-    onMarkCorrect: PropTypes.func.isRequired,
-    onMarkIncorrect: PropTypes.func.isRequired,
+    onMarkQuestionCorrect: PropTypes.func.isRequired,
+    onMarkQuestionIncorrect: PropTypes.func.isRequired,
     questionText: PropTypes.string.isRequired,
     answerText: PropTypes.string.isRequired,
     numberIs: PropTypes.number.isRequired,
@@ -49,8 +49,8 @@ export default class Question extends Component {
       numberTotal,
       questionText,
       answerText,
-      onMarkCorrect,
-      onMarkIncorrect
+      onMarkQuestionCorrect,
+      onMarkQuestionIncorrect
     } = this.props
 
     const { showAnswer } = this.state
@@ -77,12 +77,12 @@ export default class Question extends Component {
             <BigButton
               title='Yes'
               backgroundColor={blue}
-              onPress={onMarkCorrect}
+              onPress={onMarkQuestionCorrect}
             />
             <BigButton
               title='No'
               backgroundColor={orange}
-              onPress={onMarkIncorrect}
+              onPress={onMarkQuestionIncorrect}
             />
           </View>
           <View style={{flex:1}}>

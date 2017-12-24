@@ -1,4 +1,8 @@
-import { ACTIVATE_QUIZ, TOGGLE_RANDOMIZE_QUESTION_ORDER } from '../actions'
+import {
+  ACTIVATE_QUIZ,
+  TOGGLE_RANDOMIZE_QUESTION_ORDER,
+  SUBMIT_QUESTION_SCORE
+} from '../actions'
 
 const initialState = {
   activeDeckId: null,
@@ -17,6 +21,14 @@ export default function quiz(state=initialState, action){
       return {
         ...state,
         isRandomOrder: !state.isRandomOrder
+      }
+    case SUBMIT_QUESTION_SCORE:
+      return {
+        ...state,
+        grades: {
+          ...state.grades,
+          [action.payload.id]: action.payload.isCorrect
+        }
       }
     default:
       return state
