@@ -29,82 +29,75 @@ function BigButton(props){
   )
 }
 
-export default class Question extends Component {
+Question.propTypes = {
+  onMarkQuestionCorrect: PropTypes.func.isRequired,
+  onMarkQuestionIncorrect: PropTypes.func.isRequired,
+  questionText: PropTypes.string.isRequired,
+  answerText: PropTypes.string.isRequired,
+  numberIs: PropTypes.number.isRequired,
+  numberTotal: PropTypes.number.isRequired,
+  backgroundColor: PropTypes.string,
+  isAnswerVisible: PropTypes.bool.isRequired,
+  onToggleAnswerVisibility: PropTypes.func.isRequired
+}
 
-  static propTypes = {
-    onMarkQuestionCorrect: PropTypes.func.isRequired,
-    onMarkQuestionIncorrect: PropTypes.func.isRequired,
-    questionText: PropTypes.string.isRequired,
-    answerText: PropTypes.string.isRequired,
-    numberIs: PropTypes.number.isRequired,
-    numberTotal: PropTypes.number.isRequired,
-    backgroundColor: PropTypes.string,
-  }
+export default function Question(props){
 
-  state = {
-    showAnswer: false,
-  }
+  const {
+    numberIs,
+    numberTotal,
+    questionText,
+    answerText,
+    onMarkQuestionCorrect,
+    onMarkQuestionIncorrect,
+    isAnswerVisible,
+    onToggleAnswerVisibility,
+    backgroundColor
+  } = props
 
-  toggleAnswer = () => {
-    this.setState( state => ({showAnswer:!state.showAnswer}) )
-  }
-
-  render(){
-    const {
-      numberIs,
-      numberTotal,
-      questionText,
-      answerText,
-      onMarkQuestionCorrect,
-      onMarkQuestionIncorrect
-    } = this.props
-
-    const { showAnswer } = this.state
-
-    return (
+  return (
+    <View style={styles.fullContainer}>
+      <FlashCard
+        title={`Question ${numberIs} of ${numberTotal}`}
+        body={questionText}
+        backgroundColor={backgroundColor}
+      />
       <View style={styles.fullContainer}>
-        <FlashCard
-          title={`Question ${numberIs} of ${numberTotal}`}
-          body={questionText}
-          backgroundColor={this.props.backgroundColor}
-        />
-        <View style={styles.fullContainer}>
-          {showAnswer &&
-            <FlashCard
-              title='Answer'
-              body={answerText}
-              backgroundColor={this.props.backgroundColor}
-            />
-          }
+        {isAnswerVisible &&
+          <FlashCard
+            title='Answer'
+            body={answerText}
+            backgroundColor={backgroundColor}
+          />
+        }
+      </View>
+      <View style={styles.controlsContainer}>
+        <View>
+          <Text style={styles.graderPrompt}>Know it?</Text>
         </View>
-        <View style={styles.controlsContainer}>
-          <View>
-            <Text style={styles.graderPrompt}>Know it?</Text>
-          </View>
-          <View style={styles.graderButtons}>
-            <BigButton
-              title='Yes'
-              backgroundColor={blue}
-              onPress={onMarkQuestionCorrect}
-            />
-            <BigButton
-              title='No'
-              backgroundColor={orange}
-              onPress={onMarkQuestionIncorrect}
-            />
-          </View>
-          <View style={{flex:1}}>
-            <Button
-              title={showAnswer ? 'Hide Answer' : 'Show Answer'}
-              textStyle={styles.toggleText}
-              backgroundColor={darkBlue}
-              onPress={this.toggleAnswer}
-            />
-          </View>
+        <View style={styles.graderButtons}>
+          <BigButton
+            title='Yes'
+            backgroundColor={blue}
+            onPress={onMarkQuestionCorrect}
+          />
+          <BigButton
+            title='No'
+            backgroundColor={orange}
+            onPress={onMarkQuestionIncorrect}
+          />
+        </View>
+        <View style={{flex:1}}>
+          <Button
+            title={isAnswerVisible ? 'Hide Answer' : 'Show Answer'}
+            textStyle={styles.toggleText}
+            backgroundColor={darkBlue}
+            onPress={onToggleAnswerVisibility}
+          />
         </View>
       </View>
-    )
-  }
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({

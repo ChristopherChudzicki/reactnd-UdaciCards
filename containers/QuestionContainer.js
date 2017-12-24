@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Question from '../components/Question'
 import PropTypes from 'prop-types'
-import { submitQuestionScore } from '../actions/quiz'
+import { submitQuestionScore, toggleAnswerVisibility } from '../actions/quiz'
 import { lightBlue, lightOrange, white } from '../utils/colors'
 
 class QuestionContainer extends Component {
@@ -15,17 +15,21 @@ class QuestionContainer extends Component {
     index: PropTypes.number.isRequired,
     numTotal: PropTypes.number.isRequired,
     submitQuestionScore: PropTypes.func.isRequired,
-    afterPressGrade: PropTypes.func.isRequired
+    afterPressGrade: PropTypes.func.isRequired,
+    isAnswerVisible: PropTypes.bool.isRequired,
+    toggleAnswerVisibility: PropTypes.func.isRequired
   }
 
-  markCorrect = (id) => {
-    this.props.submitQuestionScore({id, isCorrect:true})
-    this.props.afterPressGrade()
+  markCorrect = () => {
+    const {id, submitQuestionScore, afterPressGrade } = this.props.id;
+    submitQuestionScore({id, isCorrect:true})
+    afterPressGrade()
   }
 
-  markIncorrect = (id) => {
-    this.props.submitQuestionScore({id, isCorrect:false})
-    this.props.afterPressGrade()
+  markIncorrect = () => {
+    const {id, submitQuestionScore, afterPressGrade } = this.props.id;
+    submitQuestionScore({id, isCorrect:false})
+    afterPressGrade()
   }
 
   getBackgroundColor(gradeStatus){
@@ -40,8 +44,21 @@ class QuestionContainer extends Component {
     }
   }
 
+  _toggleAnswerVisibility = () => {
+    const { toggleAnswerVisibility, id } = this.props
+    toggleAnswerVisibility(id)
+  }
+
   render(){
-    const { question, answer, gradeStatus, index, id, numTotal } = this.props
+    const {
+      question,
+      answer,
+      gradeStatus,
+      index,
+      numTotal,
+      isAnswerVisible,
+      toggleAnswerVisibility
+    } = this.props
     return (
       <Question
         questionText={question}
@@ -49,9 +66,11 @@ class QuestionContainer extends Component {
         backgroundColor={this.getBackgroundColor(gradeStatus)}
         numberIs={index}
         numberTotal={numTotal}
-        onMarkQuestionCorrect={()=>this.markCorrect(id)}
-        onMarkQuestionIncorrect={()=>this.markIncorrect(id)}
+        onMarkQuestionCorrect={ this.markCorrect }
+        onMarkQuestionIncorrect={ this.markIncorrect }
         gradeStatus={this.props.gradeStatus}
+        isAnswerVisible={isAnswerVisible}
+        onToggleAnswerVisibility={this._toggleAnswerVisibility}
       />
     )
   }
@@ -63,12 +82,14 @@ const mapStateToProps = ({decks, quiz}, ownProps) => {
   return {
     question,
     answer,
-    gradeStatus: quiz.grades[ownProps.id]
+    gradeStatus: quiz.grades[ownProps.id],
+    isAnswerVisible: quiz.answerVisibility[ownProps.id] === undefined ? false : quiz.answerVisibility[ownProps.id]
   }
 }
 
 const mapDispatchToProps = {
-  submitQuestionScore: submitQuestionScore
+  submitQuestionScore,
+  toggleAnswerVisibility
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionContainer)

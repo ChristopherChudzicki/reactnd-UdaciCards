@@ -1,12 +1,14 @@
 import {
   ACTIVATE_QUIZ,
   TOGGLE_RANDOMIZE_QUESTION_ORDER,
-  SUBMIT_QUESTION_SCORE
+  SUBMIT_QUESTION_SCORE,
+  TOGGLE_ANSWER_VISIBILITY
 } from '../actions'
 
 const initialState = {
   activeDeckId: null,
   grades: {},
+  answerVisibility: {},
   isRandomOrder: false
 }
 
@@ -28,6 +30,14 @@ export default function quiz(state=initialState, action){
         grades: {
           ...state.grades,
           [action.payload.id]: action.payload.isCorrect
+        }
+      }
+    case TOGGLE_ANSWER_VISIBILITY:
+      return {
+        ...state,
+        answerVisibility: {
+          ...state.answerVisibility,
+          [action.payload.id]: !state.answerVisibility[action.payload.id]
         }
       }
     default:
