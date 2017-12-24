@@ -1,7 +1,12 @@
 import React, {Component} from 'react'
 import { Button } from 'react-native-elements'
 import { View, TouchableOpacity, StyleSheet, Text } from 'react-native'
-import { gray, blue, orange, darkBlue } from '../utils/colors'
+import {
+  blue,
+  darkBlue,
+  orange,
+  gray,
+  } from '../utils/colors'
 import PropTypes from 'prop-types'
 import FlashCard from './FlashCard'
 
@@ -33,10 +38,11 @@ export default class Question extends Component {
     answerText: PropTypes.string.isRequired,
     numberIs: PropTypes.number.isRequired,
     numberTotal: PropTypes.number.isRequired,
+    backgroundColor: PropTypes.string,
   }
 
   state = {
-    showAnswer: false
+    showAnswer: false,
   }
 
   toggleAnswer = () => {
@@ -60,12 +66,14 @@ export default class Question extends Component {
         <FlashCard
           title={`Question ${numberIs} of ${numberTotal}`}
           body={questionText}
+          backgroundColor={this.props.backgroundColor}
         />
         <View style={styles.fullContainer}>
           {showAnswer &&
             <FlashCard
               title='Answer'
               body={answerText}
+              backgroundColor={this.props.backgroundColor}
             />
           }
         </View>

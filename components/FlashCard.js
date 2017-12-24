@@ -1,12 +1,17 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { Card } from 'react-native-elements'
-import { gray } from '../utils/colors'
+import { white, gray } from '../utils/colors'
 import PropTypes from 'prop-types'
 
 FlashCard.propTypes = {
   title: PropTypes.string,
-  body: PropTypes.string.isRequired
+  body: PropTypes.string.isRequired,
+  backgroundColor: PropTypes.string
+}
+
+FlashCard.defaultProps = {
+  backgroundColor: white
 }
 
 export default function FlashCard (props){
@@ -14,7 +19,7 @@ export default function FlashCard (props){
     <Card
       title={props.title}
       titleStyle={styles.title}
-      containerStyle={styles.cardOuterContainer}
+      containerStyle={[styles.cardOuterContainer,{backgroundColor:props.backgroundColor}]}
       wrapperStyle={styles.cardInnerContainer}>
       <View style={styles.fullSpaced}>
         <Text style={styles.cardText}>
