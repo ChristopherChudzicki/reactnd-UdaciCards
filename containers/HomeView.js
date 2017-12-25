@@ -5,11 +5,11 @@ import { Button } from 'react-native-elements'
 import DeckSummaries from '../components/DeckSummaries'
 import PropTypes from 'prop-types'
 import { activateQuiz } from '../actions/quiz'
+import { addDeck } from '../actions/decks'
 import { clearDecksAsync } from '../utils/api'
 import AddDeckButton from '../components/AddDeckButton'
 import NewDeckForm  from '../components/NewDeckForm'
 import Modal from 'react-native-modal'
-
 
 class HomeView extends Component {
 
@@ -20,7 +20,8 @@ class HomeView extends Component {
   static propTypes = {
     deckList: PropTypes.array.isRequired,
     activateQuiz: PropTypes.func.isRequired,
-    navigation: PropTypes.object.isRequired
+    navigation: PropTypes.object.isRequired,
+    addDeck: PropTypes.func.isRequired
   }
 
   static navigationOptions = {
@@ -58,7 +59,7 @@ class HomeView extends Component {
         />
         <Modal style={{flex:1}} isVisible={this.state.isModalVisible}>
           <NewDeckForm
-            onPressSubmit={()=>alert("Submit")}
+            onPressSubmit={this.props.addDeck}
             onPressCancel={this.hideModal}
           />
         </Modal>
@@ -82,7 +83,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  activateQuiz
+  activateQuiz,
+  addDeck
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeView)
