@@ -12,10 +12,7 @@ import { white, darkBlue } from '../utils/colors'
 
 const MainNavigator = StackNavigator({
   Home: {
-    screen: HomeView,
-    navigationOptions: {
-      headerTitle: 'Home'
-    }
+    screen: HomeView
   },
   QuizFront: {
     screen: QuizFrontView
