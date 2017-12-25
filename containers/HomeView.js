@@ -7,8 +7,16 @@ import PropTypes from 'prop-types'
 import { activateQuiz } from '../actions/quiz'
 import { clearDecksAsync } from '../utils/api'
 import AddDeckButton from '../components/AddDeckButton'
+import NewDeckForm  from '../components/NewDeckForm'
+import Modal from 'react-native-modal'
+
 
 class HomeView extends Component {
+
+  state = {
+    isModalVisible: false
+  }
+
   static propTypes = {
     deckList: PropTypes.array.isRequired,
     activateQuiz: PropTypes.func.isRequired,
@@ -19,7 +27,11 @@ class HomeView extends Component {
     title: 'Home'
   }
 
-  onPressHandler = (deck) => {
+  showModal = () => this.setState({ isModalVisible: true })
+
+  hideModal = () => this.setState({ isModalVisible: false })
+
+  onPressDeckHandler = (deck) => {
     this.props.activateQuiz(deck.id)
     this.props.navigation.navigate('QuizFront', {
       'title': deck.title
@@ -34,8 +46,8 @@ class HomeView extends Component {
       <View style={styles.container}>
         <DeckSummaries
           deckList={this.props.deckList}
-          onPressHandler={this.onPressHandler}
-          onPressSettingsHandler={(id)=>alert(`Settings for Deck ${id}`)}
+          onPressDeck={this.onPressDeckHandler}
+          onPressSettings={(id)=>alert(`Settings for Deck ${id}`)}
           editMode={true}
         />
         <Button
@@ -44,7 +56,13 @@ class HomeView extends Component {
           Component={TouchableOpacity}
           onPress={clearDecksAsync}
         />
-        <AddDeckButton />
+        <Modal style={{flex:1}} isVisible={this.state.isModalVisible}>
+          <NewDeckForm
+            onPressSubmit={()=>alert("Submit")}
+            onPressCancel={this.hideModal}
+          />
+        </Modal>
+        <AddDeckButton onPress={this.showModal} />
       </View>
     )
   }

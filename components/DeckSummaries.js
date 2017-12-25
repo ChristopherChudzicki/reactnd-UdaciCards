@@ -7,8 +7,8 @@ import PropTypes from 'prop-types'
 DeckSummaries.propTypes = {
   deckList: PropTypes.array.isRequired,
   editMode: PropTypes.bool.isRequired,
-  onPressHandler: PropTypes.func.isRequired,
-  onPressSettingsHandler: PropTypes.func.isRequired
+  onPressDeck: PropTypes.func.isRequired,
+  onPressSettings: PropTypes.func.isRequired
 }
 
 export default function DeckSummaries(props){
@@ -22,10 +22,10 @@ export default function DeckSummaries(props){
           <ListItem
             title={item.title}
             subtitle={`${Object.keys(item.questions).length} Questions`}
-            onPress={()=>props.onPressHandler(item)}
+            onPress={()=>props.onPressDeck(item)}
             underlayColor={lightBlue}
             leftIcon={props.editMode && {name:'settings', style:styles.shadow}}
-            leftIconOnPress={()=>props.onPressSettingsHandler(item.id)}
+            leftIconOnPress={()=>props.onPressSettings(item.id)}
           />
         )}
       />
