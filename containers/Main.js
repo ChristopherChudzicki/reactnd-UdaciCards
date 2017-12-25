@@ -10,9 +10,6 @@ import { fetchDecksAsync, resetDecksToDummyAsync } from '../utils/api'
 import PropTypes from 'prop-types'
 import { white, darkBlue } from '../utils/colors'
 
-
-// End Temp
-
 const MainNavigator = StackNavigator({
   Home: {
     screen: HomeView,

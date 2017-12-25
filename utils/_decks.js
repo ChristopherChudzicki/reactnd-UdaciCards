@@ -4,7 +4,7 @@ export const DECK_STORAGE_KEY = 'UdaciCards:decks'
 
 function genMultQuestions(start=1, stop=10){
   const questions = {}
-  const order = []
+  const defaultOrder = []
   for (let j=start; j <= stop; j++){
     for (let k=start; k <= stop; k++){
       let id = uuid()
@@ -12,15 +12,15 @@ function genMultQuestions(start=1, stop=10){
         question: `What is ${j}*${k}?`,
         answer: `${j*k}`
       }
-      order.push(id)
+      defaultOrder.push(id)
     }
   }
-  return {title: 'Practice Multiplication', questions, order}
+  return {title: 'Practice Multiplication', questions, defaultOrder}
 }
 
 function genSumQuestions(start=1, stop=10){
   const questions = {}
-  let order = []
+  const defaultOrder = []
   for (let j=start; j <= stop; j++){
     for (let k=start; k <= stop; k++){
       let id = uuid()
@@ -28,15 +28,15 @@ function genSumQuestions(start=1, stop=10){
         question: `What is ${j} + ${k}?`,
         answer: `${j+k}`
       }
-      order.push(id)
+      defaultOrder.push(id)
     }
   }
-  return {title: 'Practice Addition', questions, order}
+  return {title: 'Practice Addition', questions, defaultOrder}
 }
 
 function genPowQuestions(start=1, stop=10){
   const questions = {}
-  let order = []
+  const defaultOrder = []
   for (let j=start; j <= stop; j++){
     for (let k=start; k <= stop; k++){
       let id = uuid()
@@ -44,15 +44,15 @@ function genPowQuestions(start=1, stop=10){
         question: `What is ${j}^${k}?`,
         answer: `${j**k}`
       }
-      order.push(id)
+      defaultOrder.push(id)
     }
   }
-  return {title: 'Practice Exponents', questions, order}
+  return {title: 'Practice Exponents', questions, defaultOrder}
 }
 
 function genDivQuestions(start=1, stop=10){
   const questions = {}
-  let order = []
+  const defaultOrder = []
   for (let j=start; j <= stop; j++){
     for (let k=j; k <= stop; k++){
       let id = uuid()
@@ -60,10 +60,10 @@ function genDivQuestions(start=1, stop=10){
         question: `What is ${j*k}/${j}?`,
         answer: `${k}`
       }
-      order.push(id)
+      defaultOrder.push(id)
     }
   }
-  return {title: 'Practice Division', questions, order}
+  return {title: 'Practice Division', questions, defaultOrder}
 }
 
 export function generateDummyDecks(){

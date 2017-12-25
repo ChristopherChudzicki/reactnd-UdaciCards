@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { View } from 'react-native'
+import { View, TouchableOpacity } from 'react-native'
+import { Button } from 'react-native-elements'
 import DeckSummaries from '../components/DeckSummaries'
 import PropTypes from 'prop-types'
 import { activateQuiz } from '../actions/quiz'
+import { clearDecksAsync } from '../utils/api'
 
 class HomeView extends Component {
   static propTypes = {
@@ -30,6 +32,12 @@ class HomeView extends Component {
           onPressHandler={this.onPressHandler}
           onPressSettingsHandler={(id)=>alert(`Settings for Deck ${id}`)}
           editMode={true}
+        />
+        <Button
+          title={'Clear App DB'}
+          raised
+          Component={TouchableOpacity}
+          onPress={clearDecksAsync}
         />
       </View>
     )

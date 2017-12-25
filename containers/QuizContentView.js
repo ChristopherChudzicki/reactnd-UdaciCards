@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Icon } from 'react-native-elements'
 import QuestionContainer from '../containers/QuestionContainer'
 import PropTypes from 'prop-types'
 import Swiper from 'react-native-swiper'
-import shuffle from 'shuffle-array'
 
-// import QuizSummary from './QuizSummary'
+import QuizSummaryContainer from './QuizSummaryContainer'
 
 class QuizContentView extends Component {
 
@@ -13,7 +13,7 @@ class QuizContentView extends Component {
   }
 
   static propTypes = {
-    order: PropTypes.array.isRequired,
+    orderedIdList: PropTypes.array.isRequired,
     navigation: PropTypes.object.isRequired,
   }
 
@@ -21,38 +21,49 @@ class QuizContentView extends Component {
     title: navigation.state.params.title
   })
 
-  handleAfterPressGrade = ()=>{
+  swipeNext = ()=>{
     this._swiper.scrollBy(1)
   }
 
   render(){
-    const { order } = this.props
+    const { orderedIdList } = this.props
     return (
       <Swiper
+        loop={false}
         ref={(swiper) => { this._swiper = swiper }}
         showsButtons={true}
         loadMinimal={true}
+        nextButton={<Icon size={36} name='chevron-right'/>}
+        prevButton={<Icon size={36} name='chevron-left'/>}
         showsPagination={false}>
-        {order.map((id, index) => {
+        {orderedIdList.map((id, index) => {
           return (
             <QuestionContainer
               key={index}
               id={id}
               index={index}
-              numTotal={order.length}
-              afterPressGrade={ this.handleAfterPressGrade }
+              numTotal={orderedIdList.length}
+              afterPressYes={ this.swipeNext }
             />
           )
-        })}
+        }).concat(
+          // This gets QuizSummary as last page in swiper.
+          [<QuizSummaryContainer
+            key={orderedIdList.length}
+            navigation={this.props.navigation}
+           />]
+        )
+        }
       </Swiper>
     )
   }
 }
 
 const mapStateToProps = ({decks, quiz}) => {
-  const { order } = decks[quiz.activeDeckId]
+  const { defaultOrder } = decks[quiz.activeDeckId] // array of ids
+  const { order } = quiz
   return {
-    order: quiz.isRandomOrder ? shuffle(order, {copy:true}) : order,
+    orderedIdList:  order.map(value => defaultOrder[value])
   }
 }
 

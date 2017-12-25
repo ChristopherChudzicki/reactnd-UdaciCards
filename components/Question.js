@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React from 'react'
 import { Button } from 'react-native-elements'
 import { View, TouchableOpacity, StyleSheet, Text } from 'react-native'
 import {
@@ -136,8 +136,6 @@ const styles = StyleSheet.create({
   },
   button: {
     minWidth:125,
-    marginLeft:10,
-    marginRight:10
   },
   graderPrompt:{
     fontSize:18,

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Question from '../components/Question'
 import PropTypes from 'prop-types'
-import { submitQuestionScore, toggleAnswerVisibility } from '../actions/quiz'
+import { submitQuestionScore, toggleAnswerVisibility, setAnswerVisibility } from '../actions/quiz'
 import { lightBlue, lightOrange, white } from '../utils/colors'
 
 class QuestionContainer extends Component {
@@ -15,21 +15,22 @@ class QuestionContainer extends Component {
     index: PropTypes.number.isRequired,
     numTotal: PropTypes.number.isRequired,
     submitQuestionScore: PropTypes.func.isRequired,
-    afterPressGrade: PropTypes.func.isRequired,
+    afterPressYes: PropTypes.func.isRequired,
     isAnswerVisible: PropTypes.bool.isRequired,
-    toggleAnswerVisibility: PropTypes.func.isRequired
+    toggleAnswerVisibility: PropTypes.func.isRequired,
+    setAnswerVisibility: PropTypes.func.isRequired
   }
 
   markCorrect = () => {
-    const {id, submitQuestionScore, afterPressGrade } = this.props.id;
+    const {id, submitQuestionScore, afterPressYes } = this.props;
     submitQuestionScore({id, isCorrect:true})
-    afterPressGrade()
+    afterPressYes()
   }
 
   markIncorrect = () => {
-    const {id, submitQuestionScore, afterPressGrade } = this.props.id;
+    const {id, submitQuestionScore, setAnswerVisibility } = this.props
     submitQuestionScore({id, isCorrect:false})
-    afterPressGrade()
+    setAnswerVisibility({id, visibility:true})
   }
 
   getBackgroundColor(gradeStatus){
@@ -57,7 +58,6 @@ class QuestionContainer extends Component {
       index,
       numTotal,
       isAnswerVisible,
-      toggleAnswerVisibility
     } = this.props
     return (
       <Question
@@ -89,7 +89,8 @@ const mapStateToProps = ({decks, quiz}, ownProps) => {
 
 const mapDispatchToProps = {
   submitQuestionScore,
-  toggleAnswerVisibility
+  toggleAnswerVisibility,
+  setAnswerVisibility
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionContainer)
