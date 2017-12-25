@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { View } from 'react-native'
+import Modal from 'react-native-modal'
+import NewCardForm from '../components/NewCardForm'
 import PropTypes from 'prop-types'
 import QuizFrontPage from '../components/QuizFrontPage'
 import { toggleRandomizeQuestionOrder, setQuizOrder } from '../actions/quiz'
@@ -28,6 +31,14 @@ class QuizFrontView extends Component {
     title: navigation.state.params.title
   })
 
+  state = {
+    isModalVisible: false
+  }
+
+  showModal = () => this.setState({ isModalVisible: true })
+
+  hideModal = () => this.setState({ isModalVisible: false })
+
   onPressStart = () => {
     // const order = [...Array(this.props.numTotal).keys()]
     // const order = Array.from(Array(this.props.numTotal).keys())
@@ -43,14 +54,22 @@ class QuizFrontView extends Component {
     const {title, numTotal} = this.props
 
     return (
-      <QuizFrontPage
-        title={title}
-        numTotal={numTotal}
-        isRandomOrder={this.props.isRandomOrder}
-        onToggleRandomizeQuizOrder={this.props.toggleRandomizeQuestionOrder}
-        onPressStart={this.onPressStart}
-        onPressAddCard={()=>{alert('Pressed AddCard')}}
-      />
+      <View style={{flex:1}}>
+        <QuizFrontPage
+          title={title}
+          numTotal={numTotal}
+          isRandomOrder={this.props.isRandomOrder}
+          onToggleRandomizeQuizOrder={this.props.toggleRandomizeQuestionOrder}
+          onPressStart={this.onPressStart}
+          onPressAddCard={this.showModal}
+        />
+        <Modal style={{flex:1}} isVisible={this.state.isModalVisible}>
+          <NewCardForm
+            onPressSubmit={()=>alert("Submit")}
+            onPressCancel={this.hideModal}
+          />
+        </Modal>
+      </View>
     )
   }
 }

@@ -4,7 +4,7 @@ import { Button, Icon, FormLabel, FormInput, FormValidationMessage } from 'react
 import { white, blue, lightGray, darkGray } from '../utils/colors'
 import PropTypes from 'prop-types'
 
-export default class AddDeckForm extends Component {
+export default class AddCardForm extends Component {
 
   static propTypes = {
     onPressSubmit: PropTypes.func.isRequired,
@@ -12,27 +12,21 @@ export default class AddDeckForm extends Component {
   }
 
   componentDidMount = ()=>{
-    this._input.focus()
+    this._questionInput.focus()
   }
 
   state = {
-    name: '',
+    question: '',
+    answer: '',
     hasSubmitted:false
-  }
-
-  validateDeckName = () => {
-    return this.state.name != ''
   }
 
   submitHandler = () => {
     this.setState({hasSubmitted:true})
-    if (!this.validateDeckName()){
-      this._input.shake()
-    }
-    else {
-      this.props.onPressSubmit(this.state.name)
-      this.props.onPressCancel()
-    }
+    this.props.onPressSubmit({
+      question: this.state.question,
+      answer: this.state.answer
+    })
   }
 
   render(){
@@ -42,7 +36,7 @@ export default class AddDeckForm extends Component {
         behavior='position'
         style={styles.container}
       >
-        <Text style={styles.title}>New Deck</Text>
+        <Text style={styles.title}>New Card</Text>
         <Icon
           name='times'
           type='font-awesome'
@@ -50,18 +44,24 @@ export default class AddDeckForm extends Component {
           iconStyle={styles.cancelIcon}
           onPress={this.props.onPressCancel}
         />
-        <FormLabel>Deck Name</FormLabel>
+        <FormLabel>Question Text</FormLabel>
         <FormInput
-          ref={input => this._input = input}
-          value={this.state.name}
-          onChangeText={text => this.setState({name:text})}
+          ref={input => this._questionInput = input}
+          value={this.state.question}
+          onChangeText={text => this.setState({question:text})}
         />
-        {
-          this.state.hasSubmitted && !this.validateDeckName() &&
-          <FormValidationMessage>
-            Deck name cannot be empty
-          </FormValidationMessage>
-        }
+        <FormValidationMessage>
+          Question cannot be empty
+        </FormValidationMessage>
+        <FormLabel>Answer Text</FormLabel>
+        <FormInput
+          ref={input => this._answerInput = input}
+          value={this.state.answer}
+          onChangeText={text => this.setState({answer:text})}
+        />
+        <FormValidationMessage>
+          Answer cannot be empty
+        </FormValidationMessage>
         <Button
           containerViewStyle={styles.buttonContainerStyle}
           buttonStyle={styles.button}
