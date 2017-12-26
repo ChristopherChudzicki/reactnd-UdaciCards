@@ -1,6 +1,6 @@
-import { RECEIVE_DECKS, ADD_DECK } from './index'
+import { RECEIVE_DECKS, ADD_DECK, ADD_CARD } from './index'
 import { uuid } from 'lodash-uuid'
-import { addDeckAsync } from '../utils/api'
+import { addDeckAsync, addCardAsync } from '../utils/api'
 
 export function receiveDecks(decks){
   return {
@@ -19,5 +19,17 @@ export function addDeck(title){
 
     addDeckAsync({id, title})
 
+  }
+}
+
+export const addCard = ({question, answer, deckId}) => {
+  return dispatch => {
+    const cardId = uuid()
+    dispatch({
+      type:ADD_CARD,
+      payload:{cardId, deckId, question, answer}
+    })
+
+    addCardAsync({question, answer, deckId, cardId})
   }
 }

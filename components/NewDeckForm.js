@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import { KeyboardAvoidingView, Text, StyleSheet } from 'react-native'
-import { Button, Icon, FormLabel, FormInput, FormValidationMessage } from 'react-native-elements'
-import { white, blue, lightGray, darkGray } from '../utils/colors'
+import { Button, FormLabel, FormInput, FormValidationMessage } from 'react-native-elements'
+import { white, blue, darkGray } from '../utils/colors'
+import UpperRightCloseButton from './UpperRightCloseButton'
 import PropTypes from 'prop-types'
+
 
 export default class AddDeckForm extends Component {
 
@@ -17,16 +19,13 @@ export default class AddDeckForm extends Component {
 
   state = {
     name: '',
-    hasSubmitted:false
-  }
-
-  validateDeckName = () => {
-    return this.state.name != ''
+    isNameErrorVisible:false
   }
 
   submitHandler = () => {
-    this.setState({hasSubmitted:true})
-    if (!this.validateDeckName()){
+    const isNameErrorVisible = this.state.name === ''
+    this.setState({isNameErrorVisible})
+    if (isNameErrorVisible){
       this._input.shake()
     }
     else {
@@ -43,13 +42,7 @@ export default class AddDeckForm extends Component {
         style={styles.container}
       >
         <Text style={styles.title}>New Deck</Text>
-        <Icon
-          name='times'
-          type='font-awesome'
-          containerStyle={styles.cancelContainer}
-          iconStyle={styles.cancelIcon}
-          onPress={this.props.onPressCancel}
-        />
+        <UpperRightCloseButton onPress={this.props.onPressCancel}/>
         <FormLabel>Deck Name</FormLabel>
         <FormInput
           ref={input => this._input = input}
@@ -57,7 +50,7 @@ export default class AddDeckForm extends Component {
           onChangeText={text => this.setState({name:text})}
         />
         {
-          this.state.hasSubmitted && !this.validateDeckName() &&
+          this.state.isNameErrorVisible &&
           <FormValidationMessage>
             Deck name cannot be empty
           </FormValidationMessage>
@@ -73,25 +66,11 @@ export default class AddDeckForm extends Component {
   }
 }
 
-const CANCEL_WH = 30
-
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     margin:20,
     backgroundColor:white
-  },
-  cancelContainer: {
-    position:'absolute',
-    backgroundColor:lightGray,
-    borderRadius:CANCEL_WH/2,
-    width:CANCEL_WH,
-    height:CANCEL_WH,
-    right:-CANCEL_WH/2,
-    top:-CANCEL_WH/2,
-  },
-  cancelIcon: {
-    color:darkGray
   },
   title:{
     fontSize:24,

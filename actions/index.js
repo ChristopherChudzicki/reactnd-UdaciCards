@@ -3,9 +3,9 @@ export const ADD_DECK = 'ADD_DECK'
 export const REMOVE_DECK = 'REMOVE_DECK'
 export const EDIT_DECK = 'EDIT_DECK'
 
-export const ADD_QUESTION = 'ADD_QUESTION'
-export const REMOVE_QUESTION = 'REMOVE_QUESTION'
-export const EDIT_QUESTION = 'EDIT_QUESTION'
+export const ADD_CARD = 'ADD_CARD'
+export const REMOVE_CARD = 'REMOVE_CARD'
+export const EDIT_CARD = 'EDIT_CARD'
 
 export const SUBMIT_QUESTION_SCORE = 'SUBMIT_QUESTION_SCORE'
 export const ACTIVATE_QUIZ = 'ACTIVATE_QUIZ'

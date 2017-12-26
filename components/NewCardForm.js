@@ -1,14 +1,16 @@
 import React, { Component } from 'react'
 import { KeyboardAvoidingView, Text, StyleSheet } from 'react-native'
-import { Button, Icon, FormLabel, FormInput, FormValidationMessage } from 'react-native-elements'
-import { white, blue, lightGray, darkGray } from '../utils/colors'
+import { Button, FormLabel, FormInput, FormValidationMessage } from 'react-native-elements'
+import { white, blue, darkGray } from '../utils/colors'
+import UpperRightCloseButton from './UpperRightCloseButton'
 import PropTypes from 'prop-types'
 
 export default class AddCardForm extends Component {
 
   static propTypes = {
     onPressSubmit: PropTypes.func.isRequired,
-    onPressCancel: PropTypes.func.isRequired
+    onPressCancel: PropTypes.func.isRequired,
+    deckId: PropTypes.string.isRequired
   }
 
   componentDidMount = ()=>{
@@ -18,15 +20,29 @@ export default class AddCardForm extends Component {
   state = {
     question: '',
     answer: '',
-    hasSubmitted:false
+    isQuestionErrorVisible:false,
+    isAnswerErrorVisible:false,
   }
 
   submitHandler = () => {
-    this.setState({hasSubmitted:true})
-    this.props.onPressSubmit({
-      question: this.state.question,
-      answer: this.state.answer
-    })
+    const isQuestionErrorVisible = this.state.question === ''
+    const isAnswerErrorVisible = this.state.answer === ''
+    this.setState({isQuestionErrorVisible, isAnswerErrorVisible})
+    if (isQuestionErrorVisible){
+      this._questionInput.shake()
+    }
+    if (isAnswerErrorVisible){
+      this._answerInput.shake()
+    }
+    if (!isAnswerErrorVisible && !isQuestionErrorVisible){
+      this.props.onPressSubmit({
+        question: this.state.question,
+        answer: this.state.answer,
+        deckId: this.props.deckId
+      })
+      this.props.onPressCancel()
+    }
+
   }
 
   render(){
@@ -37,31 +53,29 @@ export default class AddCardForm extends Component {
         style={styles.container}
       >
         <Text style={styles.title}>New Card</Text>
-        <Icon
-          name='times'
-          type='font-awesome'
-          containerStyle={styles.cancelContainer}
-          iconStyle={styles.cancelIcon}
-          onPress={this.props.onPressCancel}
-        />
+        <UpperRightCloseButton onPress={this.props.onPressCancel}/>
         <FormLabel>Question Text</FormLabel>
         <FormInput
           ref={input => this._questionInput = input}
           value={this.state.question}
           onChangeText={text => this.setState({question:text})}
         />
-        <FormValidationMessage>
-          Question cannot be empty
-        </FormValidationMessage>
+        {this.state.isQuestionErrorVisible &&
+          <FormValidationMessage>
+            Question cannot be empty
+          </FormValidationMessage>
+        }
         <FormLabel>Answer Text</FormLabel>
         <FormInput
           ref={input => this._answerInput = input}
           value={this.state.answer}
           onChangeText={text => this.setState({answer:text})}
         />
-        <FormValidationMessage>
-          Answer cannot be empty
-        </FormValidationMessage>
+        {this.state.isAnswerErrorVisible &&
+          <FormValidationMessage>
+            Answer cannot be empty
+          </FormValidationMessage>
+        }
         <Button
           containerViewStyle={styles.buttonContainerStyle}
           buttonStyle={styles.button}
@@ -73,25 +87,11 @@ export default class AddCardForm extends Component {
   }
 }
 
-const CANCEL_WH = 30
-
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     margin:20,
     backgroundColor:white
-  },
-  cancelContainer: {
-    position:'absolute',
-    backgroundColor:lightGray,
-    borderRadius:CANCEL_WH/2,
-    width:CANCEL_WH,
-    height:CANCEL_WH,
-    right:-CANCEL_WH/2,
-    top:-CANCEL_WH/2,
-  },
-  cancelIcon: {
-    color:darkGray
   },
   title:{
     fontSize:24,

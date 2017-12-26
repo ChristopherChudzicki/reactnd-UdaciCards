@@ -4,8 +4,9 @@ import {
   SUBMIT_QUESTION_SCORE,
   TOGGLE_ANSWER_VISIBILITY,
   SET_ANSWER_VISIBILITY,
-  SET_QUIZ_ORDER
+  SET_QUIZ_ORDER,
   } from './index'
+
 
 export const activateQuiz = (id) => ({
   type: ACTIVATE_QUIZ,
