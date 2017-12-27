@@ -1,7 +1,6 @@
 import { RECEIVE_DECKS, ADD_DECK, ADD_CARD } from '../actions'
 
-const initialState = {
-}
+const initialState = {}
 
 export default function decks(state=initialState, {type, payload}){
   switch(type){
@@ -12,8 +11,7 @@ export default function decks(state=initialState, {type, payload}){
         ...state,
         [payload.id]: {
           title: payload.title,
-          defaultOrder: [],
-          questions: {}
+          defaultOrder: []
         }
       }
     case ADD_CARD:
@@ -21,13 +19,6 @@ export default function decks(state=initialState, {type, payload}){
         ...state,
         [payload.deckId]: {
           ...state[payload.deckId],
-          questions: {
-            ...state[payload.deckId].questions,
-            [payload.cardId]: {
-              question: payload.question,
-              answer: payload.answer
-            }
-          },
           defaultOrder: state[payload.deckId].defaultOrder.concat([payload.cardId])
         }
       }

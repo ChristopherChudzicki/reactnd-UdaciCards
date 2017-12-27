@@ -79,12 +79,12 @@ class QuizFrontView extends Component {
 }
 
 const mapStateToProps = ({decks, quiz}) => {
-
-  const { title, questions } = decks[quiz.activeDeckId]
+  const { activeDeckId } = quiz
+  const activeDeck = decks[activeDeckId]
   return {
-    activeDeckId:quiz.activeDeckId,
-    title: title,
-    numTotal: Object.keys(questions).length,
+    activeDeckId: activeDeckId,
+    title: activeDeck.title,
+    numTotal: activeDeck.defaultOrder.length,
     isRandomOrder: quiz.isRandomOrder
   }
 }

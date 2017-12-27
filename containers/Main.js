@@ -6,7 +6,12 @@ import HomeView from './HomeView'
 import QuizFrontView from './QuizFrontView'
 import QuizContentView from './QuizContentView'
 import { receiveDecks } from '../actions/decks'
-import { fetchDecksAsync, resetDecksToDummyAsync } from '../utils/api'
+import { receiveCards } from '../actions/cards'
+import {
+  fetchDecksAsync,
+  resetStorageToDummy,
+  fetchCardsAsync
+  } from '../utils/api'
 import PropTypes from 'prop-types'
 import { white, darkBlue } from '../utils/colors'
 
@@ -32,19 +37,26 @@ const MainNavigator = StackNavigator({
 
 class Main extends Component {
   static propTypes = {
-    receiveDecks: PropTypes.func.isRequired
+    receiveDecks: PropTypes.func.isRequired,
+    receiveCards: PropTypes.func.isRequired
   }
 
   componentDidMount(){
     fetchDecksAsync()
-      .then( decks => {
-        if (decks === null){
-          alert("Seeding Local Storage")
-          return resetDecksToDummyAsync().then( fetchDecksAsync )
-        }
-        return decks
+      .then(decks => {
+        fetchCardsAsync()
+          .then(cards => {
+            if (decks === null || cards === null ){
+              alert('Seeding Local Storage')
+              return resetStorageToDummy() // returns {decks, cards}
+            }
+            return {decks, cards}
+          })
+          .then(({cards, decks}) => {
+            this.props.receiveDecks(decks)
+            this.props.receiveCards(cards)
+          } )
       })
-      .then( this.props.receiveDecks )
   }
 
   render(){
@@ -57,7 +69,8 @@ class Main extends Component {
 }
 
 const mapDispatchToProps = {
-  receiveDecks: receiveDecks
+  receiveDecks,
+  receiveCards
 }
 
 export default connect(null, mapDispatchToProps)(Main)

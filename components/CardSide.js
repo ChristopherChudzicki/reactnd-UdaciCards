@@ -4,17 +4,17 @@ import { Card } from 'react-native-elements'
 import { white, gray } from '../utils/colors'
 import PropTypes from 'prop-types'
 
-FlashCard.propTypes = {
+CardSide.propTypes = {
   title: PropTypes.string,
   body: PropTypes.string.isRequired,
   backgroundColor: PropTypes.string
 }
 
-FlashCard.defaultProps = {
+CardSide.defaultProps = {
   backgroundColor: white
 }
 
-export default function FlashCard (props){
+export default function CardSide (props){
   return (
     <Card
       title={props.title}

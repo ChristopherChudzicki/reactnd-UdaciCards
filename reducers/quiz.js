@@ -9,6 +9,7 @@ import {
 
 const initialState = {
   activeDeckId: null,
+  order: [],
   grades: {},
   answerVisibility: {},
   isRandomOrder: false

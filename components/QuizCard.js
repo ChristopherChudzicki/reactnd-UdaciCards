@@ -8,7 +8,7 @@ import {
   gray,
   } from '../utils/colors'
 import PropTypes from 'prop-types'
-import FlashCard from './FlashCard'
+import CardSide from './CardSide'
 
 BigButton.propTypes = {
   onPress: PropTypes.func.isRequired,
@@ -29,9 +29,9 @@ function BigButton(props){
   )
 }
 
-Question.propTypes = {
-  onMarkQuestionCorrect: PropTypes.func.isRequired,
-  onMarkQuestionIncorrect: PropTypes.func.isRequired,
+QuizCard.propTypes = {
+  onMarkCorrect: PropTypes.func.isRequired,
+  onMarkIncorrect: PropTypes.func.isRequired,
   questionText: PropTypes.string.isRequired,
   answerText: PropTypes.string.isRequired,
   numberIs: PropTypes.number.isRequired,
@@ -41,15 +41,15 @@ Question.propTypes = {
   onToggleAnswerVisibility: PropTypes.func.isRequired
 }
 
-export default function Question(props){
+export default function QuizCard(props){
 
   const {
     numberIs,
     numberTotal,
     questionText,
     answerText,
-    onMarkQuestionCorrect,
-    onMarkQuestionIncorrect,
+    onMarkCorrect,
+    onMarkIncorrect,
     isAnswerVisible,
     onToggleAnswerVisibility,
     backgroundColor
@@ -57,14 +57,14 @@ export default function Question(props){
 
   return (
     <View style={styles.fullContainer}>
-      <FlashCard
+      <CardSide
         title={`Question ${numberIs} of ${numberTotal}`}
         body={questionText}
         backgroundColor={backgroundColor}
       />
       <View style={styles.fullContainer}>
         {isAnswerVisible &&
-          <FlashCard
+          <CardSide
             title='Answer'
             body={answerText}
             backgroundColor={backgroundColor}
@@ -79,12 +79,12 @@ export default function Question(props){
           <BigButton
             title='Yes'
             backgroundColor={blue}
-            onPress={onMarkQuestionCorrect}
+            onPress={onMarkCorrect}
           />
           <BigButton
             title='No'
             backgroundColor={orange}
-            onPress={onMarkQuestionIncorrect}
+            onPress={onMarkIncorrect}
           />
         </View>
         <View style={{flex:1}}>
