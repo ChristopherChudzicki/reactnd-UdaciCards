@@ -10,6 +10,7 @@ QuizFrontPage.propTypes = {
   isRandomOrder: PropTypes.bool.isRequired,
   onPressStart: PropTypes.func.isRequired,
   onPressAddCard: PropTypes.func.isRequired,
+  onPressEditQuiz: PropTypes.func.isRequired,
   numTotal: PropTypes.number.isRequired
 }
 
@@ -48,11 +49,21 @@ export default function QuizFrontPage(props){
       <View style={styles.optionsContainer}>
         <Button
           raised
-          title='Add Question'
+          title='Add New Question'
           Component={TouchableOpacity}
-          textStyle={{fontSize:16, color:black}}
+          containerViewStyle={styles.controlButton}
+          textStyle={styles.controlButtonText}
           backgroundColor={lightGray}
           onPress={props.onPressAddCard}
+        />
+        <Button
+          raised
+          title='Edit Questions'
+          Component={TouchableOpacity}
+          containerViewStyle={styles.controlButton}
+          textStyle={styles.controlButtonText}
+          backgroundColor={lightGray}
+          onPress={props.onPressEditQuiz}
         />
         <CheckBox
           center
@@ -83,6 +94,13 @@ const styles = StyleSheet.create({
     color:darkGray,
     textAlign:'center'
   },
+  controlButton: {
+    margin:3
+  },
+  controlButtonText: {
+    fontSize:16,
+     color:darkGray
+   },
   warningContainer:{
     flexDirection:'row',
     alignItems:'flex-end',

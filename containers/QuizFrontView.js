@@ -35,12 +35,17 @@ class QuizFrontView extends Component {
   })
 
   state = {
-    isModalVisible: false
+    isAddModalVisible: false,
+    isEditModalVisible: false,
   }
 
-  showModal = () => this.setState({ isModalVisible: true })
+  showAddModal = () => this.setState({ isAddModalVisible: true })
 
-  hideModal = () => this.setState({ isModalVisible: false })
+  hideAddModal = () => this.setState({ isAddModalVisible: false })
+
+  showEditModal = () => this.setState({ isEditModalVisible: true })
+
+  hideEditModal = () => this.setState({ isEditModalVisible: false })
 
   onPressStart = () => {
     // const order = [...Array(this.props.numTotal).keys()]
@@ -64,14 +69,18 @@ class QuizFrontView extends Component {
           isRandomOrder={this.props.isRandomOrder}
           onToggleRandomizeQuizOrder={this.props.toggleRandomizeQuestionOrder}
           onPressStart={this.onPressStart}
-          onPressAddCard={this.showModal}
+          onPressAddCard={this.showAddModal}
+          onPressEditQuiz={this.showEditModal}
         />
-        <Modal style={{flex:1}} isVisible={this.state.isModalVisible}>
+        <Modal style={{flex:1}} isVisible={this.state.isAddModalVisible}>
           <NewCardForm
             deckId={this.props.activeDeckId}
             onPressSubmit={this.props.addCard}
-            onPressCancel={this.hideModal}
+            onPressCancel={this.hideAddModal}
           />
+        </Modal>
+        <Modal style={{flex:1}} isVisible={this.state.isEditModalVisible}>
+
         </Modal>
       </View>
     )
