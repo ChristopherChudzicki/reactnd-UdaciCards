@@ -92,7 +92,7 @@ function genDivCards(start=1, stop=10){
   return {
     decks: {
       [deckId]: {
-        title: 'Practice Exponents',
+        title: 'Practice Division',
         defaultOrder
       }
     },
