@@ -3,6 +3,7 @@ export const ADD_DECK = 'ADD_DECK'
 export const REMOVE_DECK = 'REMOVE_DECK'
 export const EDIT_DECK = 'EDIT_DECK'
 
+export const RECEIVE_CARDS = 'RECEIVE_CARDS'
 export const ADD_CARD = 'ADD_CARD'
 export const REMOVE_CARD = 'REMOVE_CARD'
 export const EDIT_CARD = 'EDIT_CARD'

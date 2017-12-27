@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import Question from '../components/Question'
+import QuizCard from '../components/QuizCard'
 import PropTypes from 'prop-types'
 import { submitQuestionScore, toggleAnswerVisibility, setAnswerVisibility } from '../actions/quiz'
 import { lightBlue, lightOrange, white } from '../utils/colors'
 
-class QuestionContainer extends Component {
+class QuizCardContainer extends Component {
   static propTypes = {
     gradeStatus: PropTypes.bool,
     // showAnswer: PropTypes.bool.isRequired,
@@ -15,16 +15,16 @@ class QuestionContainer extends Component {
     index: PropTypes.number.isRequired,
     numTotal: PropTypes.number.isRequired,
     submitQuestionScore: PropTypes.func.isRequired,
-    afterPressYes: PropTypes.func.isRequired,
+    showNextCard: PropTypes.func.isRequired,
     isAnswerVisible: PropTypes.bool.isRequired,
     toggleAnswerVisibility: PropTypes.func.isRequired,
     setAnswerVisibility: PropTypes.func.isRequired
   }
 
   markCorrect = () => {
-    const {id, submitQuestionScore, afterPressYes } = this.props;
+    const {id, submitQuestionScore, showNextCard } = this.props;
     submitQuestionScore({id, isCorrect:true})
-    afterPressYes()
+    showNextCard()
   }
 
   markIncorrect = () => {
@@ -60,14 +60,14 @@ class QuestionContainer extends Component {
       isAnswerVisible,
     } = this.props
     return (
-      <Question
+      <QuizCard
         questionText={question}
         answerText={answer}
         backgroundColor={this.getBackgroundColor(gradeStatus)}
         numberIs={index}
         numberTotal={numTotal}
-        onMarkQuestionCorrect={ this.markCorrect }
-        onMarkQuestionIncorrect={ this.markIncorrect }
+        onMarkCorrect={ this.markCorrect }
+        onMarkIncorrect={ this.markIncorrect }
         gradeStatus={this.props.gradeStatus}
         isAnswerVisible={isAnswerVisible}
         onToggleAnswerVisibility={this._toggleAnswerVisibility}
@@ -76,14 +76,15 @@ class QuestionContainer extends Component {
   }
 }
 
-const mapStateToProps = ({decks, quiz}, ownProps) => {
-  const { questions } = decks[quiz.activeDeckId]
-  const { question, answer } = questions[ownProps.id]
+const mapStateToProps = ({cards, quiz}, ownProps) => {
+  const { question, answer } = cards[ownProps.id]
   return {
     question,
     answer,
     gradeStatus: quiz.grades[ownProps.id],
-    isAnswerVisible: quiz.answerVisibility[ownProps.id] === undefined ? false : quiz.answerVisibility[ownProps.id]
+    isAnswerVisible: quiz.answerVisibility[ownProps.id] === undefined
+      ? false
+      : quiz.answerVisibility[ownProps.id]
   }
 }
 
@@ -93,4 +94,4 @@ const mapDispatchToProps = {
   setAnswerVisibility
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(QuestionContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(QuizCardContainer)

@@ -21,7 +21,7 @@ export default function DeckSummaries(props){
         renderItem={({item}) => (
           <ListItem
             title={item.title}
-            subtitle={`${Object.keys(item.questions).length} Questions`}
+            subtitle={`${Object.keys(item.defaultOrder).length} Questions`}
             onPress={()=>props.onPressDeck(item)}
             underlayColor={lightBlue}
             leftIcon={props.editMode && {name:'settings', style:styles.shadow}}

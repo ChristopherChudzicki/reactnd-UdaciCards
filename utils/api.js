@@ -1,8 +1,15 @@
 import { AsyncStorage } from 'react-native'
-import { DECK_STORAGE_KEY, generateDummyDecks } from './_decks'
+import { generateDummyDecks } from './seed.js'
+
+export const DECK_STORAGE_KEY = 'UdaciCards:decks'
+export const CARD_STORAGE_KEY = 'UdaciCards:cards'
 
 export function fetchDecksAsync() {
   return AsyncStorage.getItem(DECK_STORAGE_KEY).then( JSON.parse )
+}
+
+export function fetchCardsAsync() {
+  return AsyncStorage.getItem(CARD_STORAGE_KEY).then( JSON.parse )
 }
 
 export function fetchDeckAsync(id){
@@ -21,22 +28,9 @@ export function addDeckAsync({title, id}){
   }))
 }
 
-export function clearDecksAsync(){
-  return AsyncStorage.removeItem(DECK_STORAGE_KEY)
-}
-
-export function resetDecksToDummyAsync(){
-  return AsyncStorage.setItem(DECK_STORAGE_KEY, generateDummyDecks())
-}
-
 export function addCardAsync({question, answer, cardId, deckId}){
-  const entry = {
-    question,
-    answer
-  }
   fetchDeckAsync(deckId)
     .then( deck => {
-      deck.questions[cardId] = entry
       deck.defaultOrder.push(cardId)
       return deck
     })
@@ -45,4 +39,20 @@ export function addCardAsync({question, answer, cardId, deckId}){
         JSON.stringify({[deckId]:modifiedDeck})
       )
     )
+    .then(
+      () => AsyncStorage.mergeItem(CARD_STORAGE_KEY,JSON.stringify({
+        [cardId]: {question, answer}
+      }))
+    )
+}
+
+export function clearDecksAsync(){
+  return AsyncStorage.removeItem(DECK_STORAGE_KEY)
+}
+
+export function resetStorageToDummy(){
+  const {decks, cards} = generateDummyDecks()
+  AsyncStorage.setItem(DECK_STORAGE_KEY, JSON.stringify(decks))
+  AsyncStorage.setItem(CARD_STORAGE_KEY, JSON.stringify(cards))
+  return {decks, cards}
 }

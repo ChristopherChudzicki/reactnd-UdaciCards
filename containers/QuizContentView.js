@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Icon } from 'react-native-elements'
-import QuestionContainer from '../containers/QuestionContainer'
+import QuizCardContainer from '../containers/QuizCardContainer'
 import PropTypes from 'prop-types'
 import Swiper from 'react-native-swiper'
 
@@ -38,12 +38,12 @@ class QuizContentView extends Component {
         showsPagination={false}>
         {orderedIdList.map((id, index) => {
           return (
-            <QuestionContainer
+            <QuizCardContainer
               key={index}
               id={id}
               index={index}
               numTotal={orderedIdList.length}
-              afterPressYes={ this.swipeNext }
+              showNextCard={ this.swipeNext }
             />
           )
         }).concat(
