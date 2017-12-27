@@ -8,6 +8,7 @@ import QuizFrontPage from '../components/QuizFrontPage'
 import { toggleRandomizeQuestionOrder, setQuizOrder } from '../actions/quiz'
 import { addCard } from '../actions/decks'
 import shuffle from 'shuffle-array'
+import CardListEditor from '../components/CardListEditor'
 
 function range(n){
   const val = []
@@ -59,7 +60,7 @@ class QuizFrontView extends Component {
   }
 
   render(){
-    const {title, numTotal} = this.props
+    const {title, numTotal, cardsData, defaultOrder} = this.props
 
     return (
       <View style={{flex:1}}>
@@ -80,20 +81,29 @@ class QuizFrontView extends Component {
           />
         </Modal>
         <Modal style={{flex:1}} isVisible={this.state.isEditModalVisible}>
-
+          <CardListEditor
+            data={cardsData}
+            order={defaultOrder}
+          />
         </Modal>
       </View>
     )
   }
 }
 
-const mapStateToProps = ({decks, quiz}) => {
+const mapStateToProps = ({decks, quiz, cards}) => {
   const { activeDeckId } = quiz
-  const activeDeck = decks[activeDeckId]
+  const {defaultOrder, title} = decks[activeDeckId]
+  const cardsData = defaultOrder.reduce( (acc, cardId) => {
+    acc[cardId] = cards[cardId]
+    return acc
+  }, {})
   return {
+    defaultOrder: defaultOrder,
+    cardsData: cardsData,
     activeDeckId: activeDeckId,
-    title: activeDeck.title,
-    numTotal: activeDeck.defaultOrder.length,
+    title: title,
+    numTotal: defaultOrder.length,
     isRandomOrder: quiz.isRandomOrder
   }
 }

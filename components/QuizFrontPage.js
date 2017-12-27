@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { Button, Icon, CheckBox } from 'react-native-elements'
 import PropTypes from 'prop-types'
-import { black, white, blue, lightGray, darkGray } from '../utils/colors'
+import { white, blue, lightGray, darkGray } from '../utils/colors'
 
 QuizFrontPage.propTypes = {
   title: PropTypes.string.isRequired,
