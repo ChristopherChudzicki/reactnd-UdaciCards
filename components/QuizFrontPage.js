@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import { Button, CheckBox } from 'react-native-elements'
+import { Button, Icon, CheckBox } from 'react-native-elements'
 import PropTypes from 'prop-types'
 import { black, white, blue, lightGray, darkGray } from '../utils/colors'
 
@@ -14,6 +14,7 @@ QuizFrontPage.propTypes = {
 }
 
 export default function QuizFrontPage(props){
+  const isStartDisabled = props.numTotal===0
   return (
     <View style={styles.fullContainer}>
       <View>
@@ -24,15 +25,26 @@ export default function QuizFrontPage(props){
           {props.numTotal} Questions
         </Text>
       </View>
-      <Button
-        large
-        raised
-        title='Start Quiz'
-        Component={TouchableOpacity}
-        textStyle={{color:white, fontSize:24, fontWeight:'800'}}
-        backgroundColor={blue}
-        onPress={props.onPressStart}
-      />
+      <View>
+        <Button
+          large
+          raised
+          disabled={isStartDisabled}
+          title='Start Quiz'
+          Component={TouchableOpacity}
+          textStyle={{color:white, fontSize:24, fontWeight:'800'}}
+          backgroundColor={blue}
+          onPress={props.onPressStart}
+        />
+        {isStartDisabled &&
+          <View style={styles.warningContainer}>
+            <Icon name='warning' iconStyle={styles.warningIcon}/>
+            <Text style={styles.warningText}>
+              Add a question before starting the quiz.
+            </Text>
+          </View>
+        }
+      </View>
       <View style={styles.optionsContainer}>
         <Button
           raised
@@ -70,5 +82,21 @@ const styles = StyleSheet.create({
     fontSize:18,
     color:darkGray,
     textAlign:'center'
+  },
+  warningContainer:{
+    flexDirection:'row',
+    alignItems:'flex-end',
+    justifyContent:'flex-start',
+    marginLeft:10,
+    marginRight:10,
+    marginTop:4,
+    marginBottom:4
+  },
+  warningIcon: {
+    color: darkGray
+  },
+  warningText: {
+    color:darkGray,
+    fontSize:14
   }
 })
