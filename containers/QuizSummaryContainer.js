@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import QuizSummary from '../components/QuizSummary'
-import { NavigationActions } from 'react-navigation'
+import { resetNavigation } from '../actions/navigation'
 import {
   blue, darkBlue,
   orange, darkOrange,
@@ -15,17 +15,11 @@ class QuizSummaryContainer extends Component {
   static propTypes = {
     grades: PropTypes.object.isRequired,
     defaultOrder: PropTypes.array.isRequired,
-    navigation: PropTypes.object
+    resetNavigation: PropTypes.func.isRequired
   }
 
   _onPressHome = () => {
-    const resetAction = NavigationActions.reset({
-      index: 0,
-      actions: [
-        NavigationActions.navigate({ routeName: 'Home'})
-      ]
-    })
-    this.props.navigation.dispatch(resetAction)
+    this.props.resetNavigation({index:0, routeName: 'Home'})
   }
 
   render(){
@@ -83,4 +77,8 @@ const mapStateToProps = ({ quiz, decks }) => ({
   defaultOrder: decks[quiz.activeDeckId].defaultOrder
 })
 
-export default connect(mapStateToProps)(QuizSummaryContainer)
+const mapDispatchToProps = {
+  resetNavigation
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(QuizSummaryContainer)

@@ -15,7 +15,6 @@ import Modal from '../components/Modal';
 class HomeView extends Component {
 
   static propTypes = {
-    navigation: PropTypes.object.isRequired,
     isNewDeckVisible: PropTypes.bool.isRequired,
     deckList: PropTypes.array.isRequired,
     setActiveDeck: PropTypes.func.isRequired,
@@ -30,15 +29,6 @@ class HomeView extends Component {
   showModal = () => this.props.setNewDeckVisibility(true)
 
   hideModal = () => this.props.setNewDeckVisibility(false)
-
-  onPressDeckHandler = ({id, title}) => {
-    this.props.setActiveDeck(id)
-    this.props.navigation.navigate('QuizFront', {
-      'title': title
-    })
-
-    // set activity
-  }
 
   render(){
 

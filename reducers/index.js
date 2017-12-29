@@ -5,10 +5,13 @@ import quiz from './quiz'
 import modals from './modals'
 import confirmer from './confirmer'
 
-export default combineReducers({
-  decks,
-  cards,
-  quiz,
-  modals,
-  confirmer
-})
+export default function getRootReducer(navReducer){
+  return combineReducers({
+    navigation:navReducer,
+    decks,
+    cards,
+    quiz,
+    modals,
+    confirmer
+  })
+}
