@@ -69,7 +69,6 @@ export default class AddDeckForm extends Component {
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
-    margin:20,
     backgroundColor:white
   },
   title:{

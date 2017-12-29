@@ -4,17 +4,19 @@ import { Button, FormLabel, FormInput, FormValidationMessage } from 'react-nativ
 import { white, blue, darkGray } from '../utils/colors'
 import UpperRightCloseButton from './UpperRightCloseButton'
 import PropTypes from 'prop-types'
+import { uuid } from 'lodash-uuid'
 
-export default class AddCardForm extends Component {
+export default class EditCardForm extends Component {
 
   static propTypes = {
     onPressSubmit: PropTypes.func.isRequired,
     onPressCancel: PropTypes.func.isRequired,
-    deckId: PropTypes.string.isRequired
-  }
-
-  componentDidMount = ()=>{
-    this._questionInput.focus()
+    deckId: PropTypes.string.isRequired,
+    cardId: PropTypes.string,
+    title: PropTypes.string.isRequired,
+    submitLabel:PropTypes.string.isRequired,
+    initialQuestion: PropTypes.string.isRequired,
+    initialAnswer: PropTypes.string.isRequired,
   }
 
   state = {
@@ -22,6 +24,14 @@ export default class AddCardForm extends Component {
     answer: '',
     isQuestionErrorVisible:false,
     isAnswerErrorVisible:false,
+  }
+
+  componentDidMount = ()=>{
+    this._questionInput.focus()
+    this.setState({
+      question: this.props.initialQuestion,
+      answer: this.props.initialAnswer
+    })
   }
 
   submitHandler = () => {
@@ -38,7 +48,8 @@ export default class AddCardForm extends Component {
       this.props.onPressSubmit({
         question: this.state.question,
         answer: this.state.answer,
-        deckId: this.props.deckId
+        deckId: this.props.deckId,
+        cardId: this.props.cardId ? this.props.cardId : uuid()
       })
       this.props.onPressCancel()
     }
@@ -52,7 +63,7 @@ export default class AddCardForm extends Component {
         behavior='position'
         style={styles.container}
       >
-        <Text style={styles.title}>New Card</Text>
+        <Text style={styles.title}>{this.props.title}</Text>
         <UpperRightCloseButton onPress={this.props.onPressCancel}/>
         <FormLabel>Question Text</FormLabel>
         <FormInput
@@ -79,7 +90,7 @@ export default class AddCardForm extends Component {
         <Button
           containerViewStyle={styles.buttonContainerStyle}
           buttonStyle={styles.button}
-          title='Create'
+          title={this.props.submitLabel}
           onPress={this.submitHandler}
         />
       </KeyboardAvoidingView>
@@ -90,7 +101,6 @@ export default class AddCardForm extends Component {
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
-    margin:20,
     backgroundColor:white
   },
   title:{

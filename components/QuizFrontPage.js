@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { Button, Icon, CheckBox } from 'react-native-elements'
 import PropTypes from 'prop-types'
-import { black, white, blue, lightGray, darkGray } from '../utils/colors'
+import { white, blue, lightGray, darkGray } from '../utils/colors'
 
 QuizFrontPage.propTypes = {
   title: PropTypes.string.isRequired,
@@ -10,6 +10,7 @@ QuizFrontPage.propTypes = {
   isRandomOrder: PropTypes.bool.isRequired,
   onPressStart: PropTypes.func.isRequired,
   onPressAddCard: PropTypes.func.isRequired,
+  onPressEditQuiz: PropTypes.func.isRequired,
   numTotal: PropTypes.number.isRequired
 }
 
@@ -40,7 +41,7 @@ export default function QuizFrontPage(props){
           <View style={styles.warningContainer}>
             <Icon name='warning' iconStyle={styles.warningIcon}/>
             <Text style={styles.warningText}>
-              Add a question before starting the quiz.
+              Add a question card before starting the quiz.
             </Text>
           </View>
         }
@@ -48,11 +49,21 @@ export default function QuizFrontPage(props){
       <View style={styles.optionsContainer}>
         <Button
           raised
-          title='Add Question'
+          title='Add New Card'
           Component={TouchableOpacity}
-          textStyle={{fontSize:16, color:black}}
+          containerViewStyle={styles.controlButton}
+          textStyle={styles.controlButtonText}
           backgroundColor={lightGray}
           onPress={props.onPressAddCard}
+        />
+        <Button
+          raised
+          title='Edit Cards'
+          Component={TouchableOpacity}
+          containerViewStyle={styles.controlButton}
+          textStyle={styles.controlButtonText}
+          backgroundColor={lightGray}
+          onPress={props.onPressEditQuiz}
         />
         <CheckBox
           center
@@ -83,6 +94,13 @@ const styles = StyleSheet.create({
     color:darkGray,
     textAlign:'center'
   },
+  controlButton: {
+    margin:3
+  },
+  controlButtonText: {
+    fontSize:16,
+     color:darkGray
+   },
   warningContainer:{
     flexDirection:'row',
     alignItems:'flex-end',

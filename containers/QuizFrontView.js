@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { View } from 'react-native'
-import Modal from 'react-native-modal'
-import NewCardForm from '../components/NewCardForm'
+import Modal from '../components/Modal'
+import EditCardForm from '../components/EditCardForm'
 import PropTypes from 'prop-types'
 import QuizFrontPage from '../components/QuizFrontPage'
 import { toggleRandomizeQuestionOrder, setQuizOrder } from '../actions/quiz'
-import { addCard } from '../actions/decks'
+import { addCard } from '../actions/cards'
+import { setNewCardVisibility } from '../actions/modals'
 import shuffle from 'shuffle-array'
 
 function range(n){
@@ -27,30 +28,30 @@ class QuizFrontView extends Component {
     navigation: PropTypes.object.isRequired,
     setQuizOrder: PropTypes.func.isRequired,
     addCard: PropTypes.func.isRequired,
-    activeDeckId: PropTypes.string.isRequired
+    activeDeckId: PropTypes.string.isRequired,
+    isNewCardVisible: PropTypes.bool.isRequired,
+    setNewCardVisibility: PropTypes.func.isRequired
   }
 
   static navigationOptions = ({navigation}) => ({
     title: navigation.state.params.title
   })
 
-  state = {
-    isModalVisible: false
-  }
+  showModal = () => this.props.setNewCardVisibility(true)
 
-  showModal = () => this.setState({ isModalVisible: true })
-
-  hideModal = () => this.setState({ isModalVisible: false })
+  hideModal = () => this.props.setNewCardVisibility(false)
 
   onPressStart = () => {
-    // const order = [...Array(this.props.numTotal).keys()]
-    // const order = Array.from(Array(this.props.numTotal).keys())
     const order = range(this.props.numTotal)
     if (this.props.isRandomOrder){
       shuffle(order)
     }
     this.props.setQuizOrder(order)
     this.props.navigation.navigate('QuizContent', {'title': this.props.title})
+  }
+
+  onPressEditQuiz = () => {
+    this.props.navigation.navigate('QuizEditor', {'quizTitle': this.props.title})
   }
 
   render(){
@@ -65,12 +66,19 @@ class QuizFrontView extends Component {
           onToggleRandomizeQuizOrder={this.props.toggleRandomizeQuestionOrder}
           onPressStart={this.onPressStart}
           onPressAddCard={this.showModal}
+          onPressEditQuiz={this.onPressEditQuiz}
         />
-        <Modal style={{flex:1}} isVisible={this.state.isModalVisible}>
-          <NewCardForm
+        <Modal
+          open={this.props.isNewCardVisible}
+          modalDidClose={this.hideModal}>
+          <EditCardForm
             deckId={this.props.activeDeckId}
             onPressSubmit={this.props.addCard}
             onPressCancel={this.hideModal}
+            initialQuestion=''
+            initialAnswer=''
+            title='New Card'
+            submitLabel='Create'
           />
         </Modal>
       </View>
@@ -78,21 +86,23 @@ class QuizFrontView extends Component {
   }
 }
 
-const mapStateToProps = ({decks, quiz}) => {
+const mapStateToProps = ({decks, quiz, modals}) => {
   const { activeDeckId } = quiz
-  const activeDeck = decks[activeDeckId]
+  const {defaultOrder, title} = decks[activeDeckId]
   return {
     activeDeckId: activeDeckId,
-    title: activeDeck.title,
-    numTotal: activeDeck.defaultOrder.length,
-    isRandomOrder: quiz.isRandomOrder
+    title: title,
+    numTotal: defaultOrder.length,
+    isRandomOrder: quiz.isRandomOrder,
+    isNewCardVisible: modals.isNewCardVisible
   }
 }
 
 const mapDispatchToProps = {
   toggleRandomizeQuestionOrder,
   setQuizOrder,
-  addCard
+  addCard,
+  setNewCardVisibility
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuizFrontView)

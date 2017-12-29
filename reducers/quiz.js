@@ -1,5 +1,6 @@
 import {
-  ACTIVATE_QUIZ,
+  SET_ACTIVE_DECK,
+  SET_ACTIVE_CARD,
   TOGGLE_RANDOMIZE_QUESTION_ORDER,
   SUBMIT_QUESTION_SCORE,
   TOGGLE_ANSWER_VISIBILITY,
@@ -9,25 +10,29 @@ import {
 
 const initialState = {
   activeDeckId: null,
+  activeCardId: null, // only used by the card editor, not by swiper
   order: [],
   grades: {},
   answerVisibility: {},
   isRandomOrder: false
 }
 
-export default function quiz(state=initialState, action){
-  switch(action.type){
-    case ACTIVATE_QUIZ:
+export default function quiz(state=initialState, {type, payload}){
+  switch(type){
+    case SET_ACTIVE_DECK:
       return {
-        grades:{},
-        answerVisibility:{},
-        isRandomOrder:false,
-        activeDeckId: action.payload.id
+        ...initialState,
+        activeDeckId: payload.id
+      }
+    case SET_ACTIVE_CARD:
+      return {
+        ...state,
+        activeCardId: payload.id
       }
     case SET_QUIZ_ORDER:
       return {
         ...state,
-        order:action.payload.order
+        order:payload.order
       }
     case TOGGLE_RANDOMIZE_QUESTION_ORDER:
       return {
@@ -39,7 +44,7 @@ export default function quiz(state=initialState, action){
         ...state,
         grades: {
           ...state.grades,
-          [action.payload.id]: action.payload.isCorrect
+          [payload.id]: payload.isCorrect
         }
       }
     case TOGGLE_ANSWER_VISIBILITY:
@@ -47,7 +52,7 @@ export default function quiz(state=initialState, action){
         ...state,
         answerVisibility: {
           ...state.answerVisibility,
-          [action.payload.id]: !state.answerVisibility[action.payload.id]
+          [payload.id]: !state.answerVisibility[payload.id]
         }
       }
     case SET_ANSWER_VISIBILITY:
@@ -55,7 +60,7 @@ export default function quiz(state=initialState, action){
         ...state,
         answerVisibility: {
           ...state.answerVisibility,
-          [action.payload.id]: action.payload.visibility
+          [payload.id]: payload.visibility
         }
       }
     default:
