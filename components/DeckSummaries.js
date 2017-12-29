@@ -1,12 +1,12 @@
 import React from 'react'
-import { FlatList, StyleSheet } from 'react-native'
-import { List, ListItem } from 'react-native-elements'
-import { lightBlue } from '../utils/colors'
+import { FlatList } from 'react-native'
+import { List } from 'react-native-elements'
 import PropTypes from 'prop-types'
+import DeckSummary from '../containers/DeckSummary'
 
 DeckSummaries.propTypes = {
   deckList: PropTypes.array.isRequired,
-  editMode: PropTypes.bool.isRequired,
+  isInEditMode: PropTypes.bool.isRequired,
   onPressDeck: PropTypes.func.isRequired,
   onPressSettings: PropTypes.func.isRequired
 }
@@ -19,28 +19,15 @@ export default function DeckSummaries(props){
         data={props.deckList}
         keyExtractor={(item) => item.id}
         renderItem={({item}) => (
-          <ListItem
+          <DeckSummary
+            id={item.id}
             title={item.title}
-            subtitle={`${Object.keys(item.defaultOrder).length} Questions`}
-            onPress={()=>props.onPressDeck(item)}
-            underlayColor={lightBlue}
-            leftIcon={props.editMode && {name:'settings', style:styles.shadow}}
-            leftIconOnPress={()=>props.onPressSettings(item.id)}
+            onPressDeck={props.onPressDeck}
+            numTotal={Object.keys(item.defaultOrder).length}
+            isInEditMode={props.isInEditMode}
           />
         )}
       />
     </List>
   )
 }
-
-const styles = StyleSheet.create({
-  shadow: {
-    shadowRadius: 1.5,
-    shadowOpacity: 1,
-    shadowColor: 'rgba(0, 0, 0, 0.24)',
-    shadowOffset: {
-      width: 1,
-      height: 2
-    }
-  }
-})

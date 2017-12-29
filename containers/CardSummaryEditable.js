@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { View, StyleSheet } from 'react-native'
 import { ListItem, Icon } from 'react-native-elements'
 import PropTypes from 'prop-types'
-import { gray } from '../utils/colors'
+import { gray, lightBlue } from '../utils/colors'
 import { setActiveCard } from '../actions/quiz'
 import { setEditCardVisibility } from '../actions/modals'
 import { setConfirmState } from '../actions/confirmer'
@@ -38,6 +38,7 @@ class CardSummary extends Component {
     return (
       <ListItem
         title={this.props.data.question}
+        underlayColor={lightBlue}
         leftIcon={
           <View style={styles.leftIconsContainer}>
             <Icon

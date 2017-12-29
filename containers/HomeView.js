@@ -31,10 +31,10 @@ class HomeView extends Component {
 
   hideModal = () => this.props.setNewDeckVisibility(false)
 
-  onPressDeckHandler = (deck) => {
-    this.props.setActiveDeck(deck.id)
+  onPressDeckHandler = ({id, title}) => {
+    this.props.setActiveDeck(id)
     this.props.navigation.navigate('QuizFront', {
-      'title': deck.title
+      'title': title
     })
 
     // set activity
@@ -45,6 +45,7 @@ class HomeView extends Component {
     return (
       <View style={styles.container}>
         <DeckSummaries
+          isInEditMode={true}
           deckList={this.props.deckList}
           onPressDeck={this.onPressDeckHandler}
           onPressSettings={(id)=>alert(`Settings for Deck ${id}`)}
