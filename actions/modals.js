@@ -2,7 +2,7 @@ import {
   SET_EDIT_DECK_VISIBILITY,
   SET_NEW_DECK_VISIBILITY,
   SET_EDIT_CARD_VISIBILITY,
-  SET_NEW_CARD_VISIBILITY
+  SET_NEW_CARD_VISIBILITY,
 } from './index'
 
 export const setEditDeckVisibility = (value) => ({

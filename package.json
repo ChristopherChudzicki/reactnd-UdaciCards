@@ -26,6 +26,7 @@
   "dependencies": {
     "expo": "^23.0.4",
     "lodash-uuid": "^0.0.3",
+    "lodash.omit": "^4.5.0",
     "lodash.range": "^3.2.0",
     "prop-types": "^15.6.0",
     "react": "16.0.0",

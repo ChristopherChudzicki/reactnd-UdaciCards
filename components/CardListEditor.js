@@ -12,7 +12,7 @@ CardListEditor.propTypes = {
 }
 
 function renderRow(rowData, sectionId, rowId){
-  return <CardSummary data={rowData} id={rowId}/>
+  return <CardSummary data={rowData} cardId={rowId}/>
 }
 
 export default function CardListEditor(props){

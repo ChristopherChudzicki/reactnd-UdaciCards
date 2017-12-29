@@ -1,9 +1,10 @@
 import {
   RECEIVE_CARDS,
   EDIT_CARD,
-  ADD_CARD
+  ADD_CARD,
+  DELETE_CARD
 } from './index'
-import { addCardAsync, editCardAsync } from '../utils/api'
+import { addCardAsync, editCardAsync, deleteCardAsync } from '../utils/api'
 
 export function receiveCards(cards){
   return {
@@ -31,5 +32,16 @@ export const editCard = ({question, answer, deckId, cardId}) => {
     })
 
     editCardAsync(cardId, {question, answer})
+  }
+}
+
+export const deleteCard = ({cardId, deckId}) => {
+  return dispatch => {
+    dispatch({
+      type: DELETE_CARD,
+      payload: {cardId, deckId}
+    })
+
+    deleteCardAsync({cardId, deckId})
   }
 }

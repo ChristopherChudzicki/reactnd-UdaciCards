@@ -9,7 +9,8 @@ const initialState = {
   isNewDeckVisible: false,
   isEditDeckVisible: false,
   isNewCardVisible: false,
-  isEditCardVisible: false
+  isEditCardVisible: false,
+  isConfirmVisible: false
 }
 
 export default function modals(state=initialState, {type, payload}){

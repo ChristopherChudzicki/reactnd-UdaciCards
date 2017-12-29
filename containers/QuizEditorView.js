@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { View } from 'react-native'
+import { deleteCard } from '../actions/cards'
 import { editDeckDefaultOrder } from '../actions/decks'
 import CardListEditor from '../components/CardListEditor'
 import PropTypes from 'prop-types'
 import EditCardContainer from '../containers/EditCardContainer'
+import ConfirmationContainer from '../containers/ConfirmationContainer'
 
 class QuizEditorView extends Component {
 
@@ -12,7 +14,8 @@ class QuizEditorView extends Component {
     cardsData: PropTypes.object.isRequired,
     defaultOrder: PropTypes.array.isRequired,
     activeDeckId: PropTypes.string.isRequired,
-    editDeckDefaultOrder: PropTypes.func.isRequired
+    editDeckDefaultOrder: PropTypes.func.isRequired,
+    deleteCard: PropTypes.func.isRequired
   }
 
   static navigationOptions = ({navigation}) => ({
@@ -28,6 +31,11 @@ class QuizEditorView extends Component {
     })
   }
 
+  onConfirm = (data) => {
+    const {cardId, deckId} = data
+    this.props.deleteCard({cardId, deckId})
+  }
+
   render(){
     const {cardsData, defaultOrder} = this.props
 
@@ -39,6 +47,9 @@ class QuizEditorView extends Component {
           onRowMoved={this.onRowMoved}
         />
         <EditCardContainer/>
+        <ConfirmationContainer
+          onConfirm={this.onConfirm}
+        />
       </View>
     )
   }
@@ -62,6 +73,7 @@ const mapStateToProps = ({decks, quiz, cards}) => {
 
 const mapDispatchToProps = {
   editDeckDefaultOrder,
+  deleteCard
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuizEditorView)

@@ -1,5 +1,6 @@
 import { AsyncStorage } from 'react-native'
 import { generateDummyDecks } from './seed.js'
+import omit from 'lodash.omit'
 
 export const DECK_STORAGE_KEY = 'UdaciCards:decks'
 export const CARD_STORAGE_KEY = 'UdaciCards:cards'
@@ -66,6 +67,21 @@ export function addCardAsync({question, answer, cardId, deckId}){
         [cardId]: {question, answer}
       }))
     )
+}
+
+export function deleteCardAsync({cardId, deckId}){
+  return fetchDeckAsync(deckId).then(
+    deck => {
+      const defaultOrder = deck.defaultOrder.filter( id => id!==cardId )
+      editDeckAsync(deckId, {defaultOrder})
+    }
+  ).then(
+    fetchCardsAsync().then(
+      cards => AsyncStorage.setItem(CARD_STORAGE_KEY, JSON.stringify(
+        omit(cards, cardId)
+      ) )
+    )
+  )
 }
 
 export function clearDecksAsync(){
