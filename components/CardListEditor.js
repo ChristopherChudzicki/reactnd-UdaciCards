@@ -1,26 +1,18 @@
 import React from 'react'
 import { View } from 'react-native'
-import { ListItem } from 'react-native-elements'
+import CardSummary from '../containers/CardSummaryEditable'
 import SortableListView from 'react-native-sortable-listview'
 import PropTypes from 'prop-types'
 import { white } from '../utils/colors'
 
 CardListEditor.propTypes = {
   data: PropTypes.object.isRequired,
-  order: PropTypes.array.isRequired
+  order: PropTypes.array.isRequired,
+  onRowMoved: PropTypes.func.isRequired,
 }
 
-function CardSummary(props){
-  return (
-    <ListItem
-      title={props.data.question}
-      {...props.sortHandlers}
-    />
-  )
-}
-
-function renderRow(row){
-  return <CardSummary data={row}/>
+function renderRow(rowData, sectionId, rowId){
+  return <CardSummary data={rowData} id={rowId}/>
 }
 
 export default function CardListEditor(props){
@@ -30,6 +22,7 @@ export default function CardListEditor(props){
         data={props.data}
         order={props.order}
         renderRow={renderRow}
+        onRowMoved={props.onRowMoved}
       />
     </View>
   )

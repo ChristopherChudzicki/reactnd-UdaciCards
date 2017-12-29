@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet } from 'react-native'
 import { Icon } from 'react-native-elements'
 import PropTypes from 'prop-types'
-import { lightGray, darkGray } from '../utils/colors'
+import { lightGray, gray, darkGray } from '../utils/colors'
 
 
 UpperRightCloseButton.propTypes = {
@@ -21,7 +21,7 @@ export default function UpperRightCloseButton({onPress}) {
   )
 }
 
-const CANCEL_WH = 30;
+const CANCEL_WH = 36;
 
 const styles = StyleSheet.create({
   container: {
@@ -32,6 +32,8 @@ const styles = StyleSheet.create({
     height:CANCEL_WH,
     right:-CANCEL_WH/2,
     top:-CANCEL_WH/2,
+    borderWidth:3,
+    borderColor:gray
   },
   button: {
     color:darkGray

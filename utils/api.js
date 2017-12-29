@@ -28,6 +28,12 @@ export function addDeckAsync({title, id}){
   }))
 }
 
+export function editCardAsync({question, answer, cardId}){
+  AsyncStorage.mergeItem(CARD_STORAGE_KEY,JSON.stringify({
+    [cardId]: {question, answer}
+  }))
+}
+
 export function addCardAsync({question, answer, cardId, deckId}){
   fetchDeckAsync(deckId)
     .then( deck => {

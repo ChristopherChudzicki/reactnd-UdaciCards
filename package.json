@@ -33,6 +33,7 @@
     "react-native-elements": "^0.18.5",
     "react-native-modal": "^4.1.1",
     "react-native-pie-chart": "^1.0.12",
+    "react-native-simple-modal": "^7.0.0",
     "react-native-sortable-listview": "^0.2.7",
     "react-native-swiper": "^1.5.13",
     "react-navigation": "^1.0.0-beta.22",

@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { View } from 'react-native'
-import Modal from 'react-native-modal'
-import NewCardForm from '../components/NewCardForm'
+import Modal from '../components/Modal'
+import EditCardForm from '../components/EditCardForm'
 import PropTypes from 'prop-types'
 import QuizFrontPage from '../components/QuizFrontPage'
 import { toggleRandomizeQuestionOrder, setQuizOrder } from '../actions/quiz'
-import { addCard } from '../actions/decks'
+import { addCard } from '../actions/cards'
+import { setNewCardVisibility } from '../actions/modals'
 import shuffle from 'shuffle-array'
-import CardListEditor from '../components/CardListEditor'
 
 function range(n){
   const val = []
@@ -28,29 +28,20 @@ class QuizFrontView extends Component {
     navigation: PropTypes.object.isRequired,
     setQuizOrder: PropTypes.func.isRequired,
     addCard: PropTypes.func.isRequired,
-    activeDeckId: PropTypes.string.isRequired
+    activeDeckId: PropTypes.string.isRequired,
+    isNewCardVisible: PropTypes.bool.isRequired,
+    setNewCardVisibility: PropTypes.func.isRequired
   }
 
   static navigationOptions = ({navigation}) => ({
     title: navigation.state.params.title
   })
 
-  state = {
-    isAddModalVisible: false,
-    isEditModalVisible: false,
-  }
+  showModal = () => this.props.setNewCardVisibility(true)
 
-  showAddModal = () => this.setState({ isAddModalVisible: true })
-
-  hideAddModal = () => this.setState({ isAddModalVisible: false })
-
-  showEditModal = () => this.setState({ isEditModalVisible: true })
-
-  hideEditModal = () => this.setState({ isEditModalVisible: false })
+  hideModal = () => this.props.setNewCardVisibility(false)
 
   onPressStart = () => {
-    // const order = [...Array(this.props.numTotal).keys()]
-    // const order = Array.from(Array(this.props.numTotal).keys())
     const order = range(this.props.numTotal)
     if (this.props.isRandomOrder){
       shuffle(order)
@@ -59,8 +50,12 @@ class QuizFrontView extends Component {
     this.props.navigation.navigate('QuizContent', {'title': this.props.title})
   }
 
+  onPressEditQuiz = () => {
+    this.props.navigation.navigate('QuizEditor', {'quizTitle': this.props.title})
+  }
+
   render(){
-    const {title, numTotal, cardsData, defaultOrder} = this.props
+    const {title, numTotal} = this.props
 
     return (
       <View style={{flex:1}}>
@@ -70,20 +65,20 @@ class QuizFrontView extends Component {
           isRandomOrder={this.props.isRandomOrder}
           onToggleRandomizeQuizOrder={this.props.toggleRandomizeQuestionOrder}
           onPressStart={this.onPressStart}
-          onPressAddCard={this.showAddModal}
-          onPressEditQuiz={this.showEditModal}
+          onPressAddCard={this.showModal}
+          onPressEditQuiz={this.onPressEditQuiz}
         />
-        <Modal style={{flex:1}} isVisible={this.state.isAddModalVisible}>
-          <NewCardForm
+        <Modal
+          open={this.props.isNewCardVisible}
+          modalDidClose={this.hideModal}>
+          <EditCardForm
             deckId={this.props.activeDeckId}
             onPressSubmit={this.props.addCard}
-            onPressCancel={this.hideAddModal}
-          />
-        </Modal>
-        <Modal style={{flex:1}} isVisible={this.state.isEditModalVisible}>
-          <CardListEditor
-            data={cardsData}
-            order={defaultOrder}
+            onPressCancel={this.hideModal}
+            initialQuestion=''
+            initialAnswer=''
+            title='New Card'
+            submitLabel='Create'
           />
         </Modal>
       </View>
@@ -91,27 +86,23 @@ class QuizFrontView extends Component {
   }
 }
 
-const mapStateToProps = ({decks, quiz, cards}) => {
+const mapStateToProps = ({decks, quiz, modals}) => {
   const { activeDeckId } = quiz
   const {defaultOrder, title} = decks[activeDeckId]
-  const cardsData = defaultOrder.reduce( (acc, cardId) => {
-    acc[cardId] = cards[cardId]
-    return acc
-  }, {})
   return {
-    defaultOrder: defaultOrder,
-    cardsData: cardsData,
     activeDeckId: activeDeckId,
     title: title,
     numTotal: defaultOrder.length,
-    isRandomOrder: quiz.isRandomOrder
+    isRandomOrder: quiz.isRandomOrder,
+    isNewCardVisible: modals.isNewCardVisible
   }
 }
 
 const mapDispatchToProps = {
   toggleRandomizeQuestionOrder,
   setQuizOrder,
-  addCard
+  addCard,
+  setNewCardVisibility
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuizFrontView)

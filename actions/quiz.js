@@ -1,5 +1,6 @@
 import {
-  ACTIVATE_QUIZ,
+  SET_ACTIVE_DECK,
+  SET_ACTIVE_CARD,
   TOGGLE_RANDOMIZE_QUESTION_ORDER,
   SUBMIT_QUESTION_SCORE,
   TOGGLE_ANSWER_VISIBILITY,
@@ -8,8 +9,13 @@ import {
   } from './index'
 
 
-export const activateQuiz = (id) => ({
-  type: ACTIVATE_QUIZ,
+export const setActiveDeck = (id) => ({
+  type: SET_ACTIVE_DECK,
+  payload: {id}
+})
+
+export const setActiveCard = (id) => ({
+  type: SET_ACTIVE_CARD,
   payload: {id}
 })
 

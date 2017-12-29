@@ -5,6 +5,7 @@ import { StackNavigator } from 'react-navigation'
 import HomeView from './HomeView'
 import QuizFrontView from './QuizFrontView'
 import QuizContentView from './QuizContentView'
+import QuizEditorView from './QuizEditorView'
 import { receiveDecks } from '../actions/decks'
 import { receiveCards } from '../actions/cards'
 import {
@@ -24,6 +25,9 @@ const MainNavigator = StackNavigator({
   },
   QuizContent: {
     screen: QuizContentView
+  },
+  QuizEditor: {
+    screen: QuizEditorView
   }
 }, {
   initialRouteName: 'Home',

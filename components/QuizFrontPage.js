@@ -41,7 +41,7 @@ export default function QuizFrontPage(props){
           <View style={styles.warningContainer}>
             <Icon name='warning' iconStyle={styles.warningIcon}/>
             <Text style={styles.warningText}>
-              Add a question before starting the quiz.
+              Add a question card before starting the quiz.
             </Text>
           </View>
         }
@@ -49,7 +49,7 @@ export default function QuizFrontPage(props){
       <View style={styles.optionsContainer}>
         <Button
           raised
-          title='Add New Question'
+          title='Add New Card'
           Component={TouchableOpacity}
           containerViewStyle={styles.controlButton}
           textStyle={styles.controlButtonText}
@@ -58,7 +58,7 @@ export default function QuizFrontPage(props){
         />
         <Button
           raised
-          title='Edit Questions'
+          title='Edit Cards'
           Component={TouchableOpacity}
           containerViewStyle={styles.controlButton}
           textStyle={styles.controlButtonText}
