@@ -8,7 +8,6 @@ import {
   SET_QUIZ_ORDER,
   } from './index'
 
-
 export const setActiveDeck = (id) => ({
   type: SET_ACTIVE_DECK,
   payload: {id}

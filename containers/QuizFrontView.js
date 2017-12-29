@@ -9,6 +9,7 @@ import { toggleRandomizeQuestionOrder, setQuizOrder } from '../actions/quiz'
 import { addCard } from '../actions/cards'
 import { setNewCardVisibility } from '../actions/modals'
 import shuffle from 'shuffle-array'
+import { navigate } from '../actions/navigation'
 
 function range(n){
   const val = []
@@ -25,7 +26,7 @@ class QuizFrontView extends Component {
     numTotal: PropTypes.number.isRequired,
     isRandomOrder: PropTypes.bool.isRequired,
     toggleRandomizeQuestionOrder: PropTypes.func.isRequired,
-    navigation: PropTypes.object.isRequired,
+    navigate: PropTypes.func.isRequired,
     setQuizOrder: PropTypes.func.isRequired,
     addCard: PropTypes.func.isRequired,
     activeDeckId: PropTypes.string.isRequired,
@@ -47,11 +48,11 @@ class QuizFrontView extends Component {
       shuffle(order)
     }
     this.props.setQuizOrder(order)
-    this.props.navigation.navigate('QuizContent', {'title': this.props.title})
+    this.props.navigate('QuizContent', {'title': this.props.title})
   }
 
   onPressEditQuiz = () => {
-    this.props.navigation.navigate('QuizEditor', {'quizTitle': this.props.title})
+    this.props.navigate('QuizEditor', {'quizTitle': this.props.title})
   }
 
   render(){
@@ -102,7 +103,8 @@ const mapDispatchToProps = {
   toggleRandomizeQuestionOrder,
   setQuizOrder,
   addCard,
-  setNewCardVisibility
+  setNewCardVisibility,
+  navigate
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuizFrontView)

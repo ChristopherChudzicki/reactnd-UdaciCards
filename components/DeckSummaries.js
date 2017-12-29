@@ -7,7 +7,6 @@ import DeckSummary from '../containers/DeckSummary'
 DeckSummaries.propTypes = {
   deckList: PropTypes.array.isRequired,
   isInEditMode: PropTypes.bool.isRequired,
-  onPressDeck: PropTypes.func.isRequired,
   onPressSettings: PropTypes.func.isRequired
 }
 
@@ -22,7 +21,6 @@ export default function DeckSummaries(props){
           <DeckSummary
             id={item.id}
             title={item.title}
-            onPressDeck={props.onPressDeck}
             numTotal={Object.keys(item.defaultOrder).length}
             isInEditMode={props.isInEditMode}
           />

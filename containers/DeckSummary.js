@@ -4,13 +4,17 @@ import { StyleSheet } from 'react-native'
 import { ListItem, Icon } from 'react-native-elements'
 import PropTypes from 'prop-types'
 import { lightBlue, gray } from '../utils/colors'
+import { setActiveDeck } from '../actions/quiz'
+import { navigate } from '../actions/navigation'
 
 class DeckSummary extends Component {
   static propTypes = {
     title: PropTypes.string.isRequired,
     numTotal: PropTypes.number.isRequired,
     isInEditMode: PropTypes.bool.isRequired,
-    id: PropTypes.string.isRequired
+    id: PropTypes.string.isRequired,
+    setActiveDeck: PropTypes.func.isRequired,
+    navigate: PropTypes.func.isRequired
   }
 
   onPressEdit = () => {
@@ -22,7 +26,8 @@ class DeckSummary extends Component {
   }
 
   onPress = () => {
-    this.props.onPressDeck({id:this.props.id, title:this.props.title})
+    this.props.setActiveDeck(this.props.id)
+    this.props.navigate('QuizFront', {title: this.props.title})
   }
 
   render(){
@@ -75,4 +80,9 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect()(DeckSummary)
+const mapDispatchToProps = {
+  setActiveDeck,
+  navigate
+}
+
+export default connect(null, mapDispatchToProps)(DeckSummary)

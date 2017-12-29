@@ -1,6 +1,6 @@
 import { createStore, applyMiddleware } from 'redux'
 import { composeWithDevTools } from 'remote-redux-devtools';
-import rootReducer from '../reducers'
+import getRootReducer from '../reducers'
 import thunk from 'redux-thunk'
 
 const initialState = {}
@@ -13,10 +13,10 @@ const composedEnhancers = composeWithDevTools(
   applyMiddleware(...middleware),
 )
 
-const store = createStore(
-  rootReducer,
-  initialState,
-  composedEnhancers
-)
-
-export default store
+export default function getStore(navReducer){
+  return createStore(
+    getRootReducer(navReducer),
+    initialState,
+    composedEnhancers
+  )
+}
