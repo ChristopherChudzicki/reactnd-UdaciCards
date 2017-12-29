@@ -30,6 +30,6 @@ export const editCard = ({question, answer, deckId, cardId}) => {
       payload:{cardId, deckId, question, answer}
     })
 
-    editCardAsync({question, answer, deckId, cardId})
+    editCardAsync(cardId, {question, answer})
   }
 }

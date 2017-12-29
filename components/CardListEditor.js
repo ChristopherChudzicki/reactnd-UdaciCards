@@ -23,6 +23,7 @@ export default function CardListEditor(props){
         order={props.order}
         renderRow={renderRow}
         onRowMoved={props.onRowMoved}
+        disableAnimatedScrolling={true} // recommended, https://github.com/deanmcpherson/react-native-sortable-listview
       />
     </View>
   )

@@ -17,21 +17,37 @@ export function fetchDeckAsync(id){
     .then(result => result[id] )
 }
 
-export function addDeckAsync({title, id}){
+export function addDeckAsync(deckId, title){
   const entry = {
     title,
     questions: {},
     defaultOrder: []
   }
   return AsyncStorage.mergeItem(DECK_STORAGE_KEY, JSON.stringify({
-    [id]: entry
+    [deckId]: entry
   }))
 }
 
-export function editCardAsync({question, answer, cardId}){
-  AsyncStorage.mergeItem(CARD_STORAGE_KEY,JSON.stringify({
-    [cardId]: {question, answer}
-  }))
+export function editDeckAsync(deckId, payload){
+  fetchDeckAsync(deckId).then(
+    deck => {
+      const editedDeck = {...deck, ...payload}
+      AsyncStorage.mergeItem(DECK_STORAGE_KEY, JSON.stringify({
+        [deckId]: editedDeck
+      }))
+    }
+  )
+}
+
+export function editCardAsync(cardId, payload){
+  fetchDeckAsync(cardId).then(
+    card => {
+      const editedCard = {...card, ...payload}
+      AsyncStorage.mergeItem(CARD_STORAGE_KEY, JSON.stringify({
+        [cardId]: editedCard
+      }))
+    }
+  )
 }
 
 export function addCardAsync({question, answer, cardId, deckId}){

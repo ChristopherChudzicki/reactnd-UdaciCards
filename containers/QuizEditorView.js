@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { View } from 'react-native'
-import { editDeckOrder } from '../actions/decks'
+import { editDeckDefaultOrder } from '../actions/decks'
 import CardListEditor from '../components/CardListEditor'
 import PropTypes from 'prop-types'
 import EditCardContainer from '../containers/EditCardContainer'
@@ -12,6 +12,7 @@ class QuizEditorView extends Component {
     cardsData: PropTypes.object.isRequired,
     defaultOrder: PropTypes.array.isRequired,
     activeDeckId: PropTypes.string.isRequired,
+    editDeckDefaultOrder: PropTypes.func.isRequired
   }
 
   static navigationOptions = ({navigation}) => ({
@@ -19,9 +20,9 @@ class QuizEditorView extends Component {
   })
 
   onRowMoved = ({from, to}) => {
-    const oldOrder = this.props.defaultOrder
-    const newOrder = oldOrder.splice(to, 0, oldOrder.splice(from, 1)[0])
-    editDeckOrder({
+    const newOrder = [...this.props.defaultOrder] // copy old order
+    newOrder.splice(to, 0, newOrder.splice(from, 1)[0]) // mutate the copy
+    this.props.editDeckDefaultOrder({
       deckId: this.props.activeDeckId,
       defaultOrder: newOrder
     })
@@ -60,7 +61,7 @@ const mapStateToProps = ({decks, quiz, cards}) => {
 }
 
 const mapDispatchToProps = {
-  editDeckOrder,
+  editDeckDefaultOrder,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuizEditorView)

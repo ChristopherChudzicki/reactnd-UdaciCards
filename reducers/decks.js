@@ -2,7 +2,7 @@ import {
   RECEIVE_DECKS,
   ADD_DECK,
   ADD_CARD,
-  EDIT_DECK_ORDER
+  EDIT_DECK_DEFAULT_ORDER
   } from '../actions'
 
 const initialState = {}
@@ -27,7 +27,7 @@ export default function decks(state=initialState, {type, payload}){
           defaultOrder: state[payload.deckId].defaultOrder.concat([payload.cardId])
         }
       }
-    case EDIT_DECK_ORDER:
+    case EDIT_DECK_DEFAULT_ORDER:
       return {
         ...state,
         [payload.deckId]: {
