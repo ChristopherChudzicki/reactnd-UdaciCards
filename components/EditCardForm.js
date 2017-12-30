@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { KeyboardAvoidingView, Text, StyleSheet } from 'react-native'
+import { View, KeyboardAvoidingView, Text, StyleSheet } from 'react-native'
 import { Button, FormLabel, FormInput, FormValidationMessage } from 'react-native-elements'
 import { white, blue, darkGray } from '../utils/colors'
 import UpperRightCloseButton from './UpperRightCloseButton'
@@ -61,38 +61,39 @@ export default class EditCardForm extends Component {
       <KeyboardAvoidingView
         keyboardVerticalOffset={65}
         behavior='position'
-        style={styles.container}
       >
-        <Text style={styles.title}>{this.props.title}</Text>
-        <UpperRightCloseButton onPress={this.props.onPressCancel}/>
-        <FormLabel>Question Text</FormLabel>
-        <FormInput
-          ref={input => this._questionInput = input}
-          value={this.state.question}
-          onChangeText={text => this.setState({question:text})}
-        />
-        {this.state.isQuestionErrorVisible &&
-          <FormValidationMessage>
-            Question cannot be empty
-          </FormValidationMessage>
-        }
-        <FormLabel>Answer Text</FormLabel>
-        <FormInput
-          ref={input => this._answerInput = input}
-          value={this.state.answer}
-          onChangeText={text => this.setState({answer:text})}
-        />
-        {this.state.isAnswerErrorVisible &&
-          <FormValidationMessage>
-            Answer cannot be empty
-          </FormValidationMessage>
-        }
-        <Button
-          containerViewStyle={styles.buttonContainerStyle}
-          buttonStyle={styles.button}
-          title={this.props.submitLabel}
-          onPress={this.submitHandler}
-        />
+        <View style={styles.container}>
+          <Text style={styles.title}>{this.props.title}</Text>
+          <UpperRightCloseButton onPress={this.props.onPressCancel}/>
+          <FormLabel>Question Text</FormLabel>
+          <FormInput
+            ref={input => this._questionInput = input}
+            value={this.state.question}
+            onChangeText={text => this.setState({question:text})}
+          />
+          {this.state.isQuestionErrorVisible &&
+            <FormValidationMessage>
+              Question cannot be empty
+            </FormValidationMessage>
+          }
+          <FormLabel>Answer Text</FormLabel>
+          <FormInput
+            ref={input => this._answerInput = input}
+            value={this.state.answer}
+            onChangeText={text => this.setState({answer:text})}
+          />
+          {this.state.isAnswerErrorVisible &&
+            <FormValidationMessage>
+              Answer cannot be empty
+            </FormValidationMessage>
+          }
+          <Button
+            containerViewStyle={styles.buttonContainerStyle}
+            buttonStyle={styles.button}
+            title={this.props.submitLabel}
+            onPress={this.submitHandler}
+          />
+        </View>
       </KeyboardAvoidingView>
     )
   }

@@ -15,7 +15,7 @@ ConfirmationModal.propTypes={
 
 export default function ConfirmationModal(props){
   return (
-    <Modal open={props.isVisible} closeOnTouchOutside={false}>
+    <Modal visible={props.isVisible} closeOnTouchOutside={false}>
       <View style={styles.container}>
         <Text style={styles.title}>{props.title}</Text>
         <Text style={styles.message}>{props.message}</Text>

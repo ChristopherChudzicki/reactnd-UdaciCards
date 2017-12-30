@@ -29,7 +29,7 @@ class EditCardContainer extends Component {
 
     return (
       <Modal
-        open={this.props.isEditCardVisible}
+        visible={this.props.isEditCardVisible}
         modalDidClose={this.hideModal}>
         <EditCardForm
           cardId={this.props.activeCardId}

@@ -24,7 +24,7 @@ class EditDeckContainer extends Component {
 
     return (
       <Modal
-        open={this.props.isEditDeckVisible}
+        visible={this.props.isEditDeckVisible}
         modalDidClose={this.hideModal}>
         <EditDeckForm
           deckId={this.props.activeDeckId}
