@@ -132,6 +132,8 @@ export function resetStorage(){
   return {decks, cards}
 }
 
+// Notification functions largely borrowed from course videos
+
 export function clearLocalNotificationAsync() {
   return AsyncStorage.removeItem(NOTIFICATION_KEY)
     .then(Notifications.cancelAllScheduledNotificationsAsync)
