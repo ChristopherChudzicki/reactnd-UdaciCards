@@ -27,6 +27,7 @@ class CardSummary extends Component {
 
   onPressDelete = () => {
     this.props.setConfirmState({
+      id: 'deleteCard',
       title: 'Delete?',
       message: `Are you sure you want to delete the card "${this.props.data.question}"`,
       isVisible: true,

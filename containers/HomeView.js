@@ -80,6 +80,7 @@ class HomeView extends Component {
         </Modal>
         {this.props.activeDeckId && <EditDeckContainer />}
         <ConfirmationContainer
+          id='deleteDeck'
           onConfirm={this.onDeleteConfirmed}
         />
       </View>
@@ -99,12 +100,13 @@ const styles = StyleSheet.create({
   }
 })
 
-const mapStateToProps = ({decks, quiz, modals}) => ({
+const mapStateToProps = ({decks, quiz, modals, navigation}) => ({
   isNewDeckVisible: modals.isNewDeckVisible,
   activeDeckId: quiz.activeDeckId,
   deckList: Object.keys(decks).map(
     id => ({...decks[id], id})
-  ).sort(deckListSorter)
+  ).sort(deckListSorter),
+  stateNav: navigation
 })
 
 const mapDispatchToProps = {

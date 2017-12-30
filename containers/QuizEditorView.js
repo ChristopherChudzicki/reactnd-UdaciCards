@@ -48,6 +48,7 @@ class QuizEditorView extends Component {
         />
         <EditCardContainer/>
         <ConfirmationContainer
+          id='deleteCard'
           onConfirm={this.onConfirm}
         />
       </View>

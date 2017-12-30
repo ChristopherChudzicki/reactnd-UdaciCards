@@ -28,6 +28,7 @@ class DeckSummary extends Component {
   onPressDelete = () => {
     const {deck, id} = this.props
     this.props.setConfirmState({
+      id: 'deleteDeck',
       isVisible: true,
       title: 'Delete?',
       message: `Are you sure you want to delete the deck "${deck.title}"?`,

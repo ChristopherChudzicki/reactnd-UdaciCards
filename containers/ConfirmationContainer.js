@@ -7,6 +7,7 @@ import { setConfirmState } from '../actions/confirmer'
 class ConfirmationContainer extends Component {
 
   static propTypes = {
+    id: PropTypes.string.isRequired,
     setConfirmState: PropTypes.func.isRequired,
     isVisible: PropTypes.bool.isRequired,
     title: PropTypes.string.isRequired,
@@ -22,12 +23,12 @@ class ConfirmationContainer extends Component {
 
   onConfirm = ()=>{
     this.props.onConfirm(this.props.data)
-    this.props.setConfirmState({isVisible:false})
+    this.props.setConfirmState({ isVisible:false, id:this.props.id })
   }
 
   onCancel = ()=>{
     this.props.onCancel(this.props.data)
-    this.props.setConfirmState({isVisible:false})
+    this.props.setConfirmState({ isVisible:false, id:this.props.id })
   }
 
   render (){
@@ -43,7 +44,9 @@ class ConfirmationContainer extends Component {
   }
 }
 
-const mapStateToProps = state => state.confirmer
+const mapStateToProps = (state, ownProps) => ({
+  ...state.confirmer[ownProps.id]
+})
 
 const mapDispatchToProps = {
   setConfirmState
