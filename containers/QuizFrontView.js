@@ -8,20 +8,15 @@ import QuizFrontPage from '../components/QuizFrontPage'
 import {
   toggleRandomizeQuestionOrder,
   setQuizOrder,
-  updateStudyNotification
+  updateStudyNotification,
+  clearGrades,
+  clearAnswers
 } from '../actions/quiz'
 import { addCard } from '../actions/cards'
 import { setNewCardVisibility } from '../actions/modals'
 import shuffle from 'shuffle-array'
 import { navigate } from '../actions/navigation'
-
-function range(n){
-  const val = []
-  for (let j=0; j<n;j++){
-    val.push(j)
-  }
-  return val
-}
+import { range } from '../utils/misc'
 
 class QuizFrontView extends Component {
 
@@ -36,7 +31,9 @@ class QuizFrontView extends Component {
     activeDeckId: PropTypes.string.isRequired,
     isNewCardVisible: PropTypes.bool.isRequired,
     setNewCardVisibility: PropTypes.func.isRequired,
-    updateStudyNotification: PropTypes.func.isRequired
+    updateStudyNotification: PropTypes.func.isRequired,
+    clearGrades: PropTypes.func.isRequired,
+    clearAnswers: PropTypes.func.isRequired
   }
 
   static navigationOptions = ({navigation}) => ({
@@ -54,6 +51,8 @@ class QuizFrontView extends Component {
     }
     this.props.setQuizOrder(order)
     this.props.updateStudyNotification()
+    this.props.clearGrades()
+    this.props.clearAnswers()
     this.props.navigate('QuizContent', {'title': this.props.title})
   }
 
@@ -111,7 +110,9 @@ const mapDispatchToProps = {
   addCard,
   setNewCardVisibility,
   navigate,
-  updateStudyNotification
+  updateStudyNotification,
+  clearGrades,
+  clearAnswers
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuizFrontView)

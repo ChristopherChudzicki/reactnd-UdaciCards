@@ -5,7 +5,9 @@ import {
   SUBMIT_QUESTION_SCORE,
   TOGGLE_ANSWER_VISIBILITY,
   SET_ANSWER_VISIBILITY,
-  SET_QUIZ_ORDER
+  SET_QUIZ_ORDER,
+  CLEAR_GRADES,
+  CLEAR_ANSWERS
 } from '../actions'
 
 const initialState = {
@@ -63,6 +65,10 @@ export default function quiz(state=initialState, {type, payload}){
           [payload.id]: payload.visibility
         }
       }
+    case CLEAR_GRADES:
+      return {...state, grades:{}}
+    case CLEAR_ANSWERS:
+      return {...state, answerVisibility:{}}
     default:
       return state
   }

@@ -7,8 +7,9 @@ import {
   TOGGLE_ANSWER_VISIBILITY,
   SET_ANSWER_VISIBILITY,
   SET_QUIZ_ORDER,
-  } from './index'
-
+  CLEAR_GRADES,
+  CLEAR_ANSWERS,
+} from './index'
 import {
   clearLocalNotificationAsync,
   setLocalNotificationAsync
@@ -56,3 +57,7 @@ export const updateStudyNotification = () => {
     clearLocalNotificationAsync().then(setLocalNotificationAsync)
   }
 }
+
+export const clearGrades = () => ({type:CLEAR_GRADES})
+
+export const clearAnswers = () => ({type:CLEAR_ANSWERS})

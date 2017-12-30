@@ -31,15 +31,23 @@ function Circle (props){
 }
 
 QuizSummary.propTypes = {
+  title: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
   detailsArray: PropTypes.array.isRequired,
   numTotal: PropTypes.number.isRequired,
-  onPressHome: PropTypes.func.isRequired
+  onPressRetake: PropTypes.func.isRequired,
+  onPressReturn: PropTypes.func.isRequired
 }
 
 export default function QuizSummary (props) {
 
-  const { detailsArray, numTotal, score, onPressHome } = props
+  const { detailsArray,
+    numTotal,
+    score,
+    onPressRetake,
+    onPressReturn,
+    title
+  } = props
 
   const unanswered = detailsArray[2]['value']
 
@@ -50,7 +58,7 @@ export default function QuizSummary (props) {
     <View style={styles.fullContainer}>
       <View style={styles.summaryContainer}>
         {unanswered===0 ?
-          <Text style={[styles.title, {color: blue}]}>
+          <Text style={[styles.title, {color: darkBlue}]}>
             Finished!
           </Text> :
           <Text style={[styles.title, {color: darkGray}]}>
@@ -88,11 +96,24 @@ export default function QuizSummary (props) {
         <Button
           large
           backgroundColor={darkBlue}
-          icon={{name:'home'}}
+          icon={{name:'refresh'}}
+          type='font-awesome'
           Component={TouchableOpacity}
           raised
-          title="Home"
-          onPress={onPressHome}
+          title="Retake Quiz"
+          onPress={onPressRetake}
+          buttonStyle={styles.button}
+        />
+        <Button
+          large
+          backgroundColor={darkBlue}
+          icon={{name:'chevron-left'}}
+          type='font-awesome'
+          Component={TouchableOpacity}
+          raised
+          title={title}
+          onPress={onPressReturn}
+          buttonStyle={styles.button}
         />
       </View>
     </View>
@@ -139,5 +160,8 @@ const styles = StyleSheet.create({
   detailsItem: {
     fontSize:18,
     fontWeight:'800'
+  },
+  button: {
+    margin:5
   }
 })

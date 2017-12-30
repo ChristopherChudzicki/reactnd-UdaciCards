@@ -10,3 +10,5 @@ export const resetNavigation = ({index, routeName, params}) => NavigationActions
     NavigationActions.navigate({ routeName, params })
   ]
 })
+
+export const navigateBack = () => NavigationActions.back()

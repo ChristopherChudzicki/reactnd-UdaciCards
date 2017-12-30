@@ -10,3 +10,11 @@ export function deckListSorter(deckA, deckB){
     return 0
   }
 }
+
+export function range(n){
+  const val = []
+  for (let j=0; j<n;j++){
+    val.push(j)
+  }
+  return val
+}
