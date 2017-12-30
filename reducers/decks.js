@@ -3,8 +3,11 @@ import {
   ADD_DECK,
   ADD_CARD,
   DELETE_CARD,
+  DELETE_DECK,
+  EDIT_DECK_TITLE,
   EDIT_DECK_DEFAULT_ORDER
-  } from '../actions'
+} from '../actions'
+import omit from 'lodash.omit'
 
 const initialState = {}
 
@@ -15,7 +18,7 @@ export default function decks(state=initialState, {type, payload}){
     case ADD_DECK:
       return {
         ...state,
-        [payload.id]: {
+        [payload.deckId]: {
           title: payload.title,
           defaultOrder: []
         }
@@ -44,6 +47,16 @@ export default function decks(state=initialState, {type, payload}){
           defaultOrder: payload.defaultOrder
         }
       }
+    case EDIT_DECK_TITLE:
+      return {
+        ...state,
+        [payload.deckId]: {
+          ...state[payload.deckId],
+          title: payload.title
+        }
+      }
+    case DELETE_DECK:
+      return omit(state, payload.deckId)
     default:
       return state
   }

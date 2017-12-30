@@ -1,6 +1,6 @@
 import React from 'react'
 import { View } from 'react-native'
-import CardSummary from '../containers/CardSummaryEditable'
+import CardSummary from '../containers/CardSummary'
 import SortableListView from 'react-native-sortable-listview'
 import PropTypes from 'prop-types'
 import { white } from '../utils/colors'

@@ -6,55 +6,68 @@ import PropTypes from 'prop-types'
 import { lightBlue, gray } from '../utils/colors'
 import { setActiveDeck } from '../actions/quiz'
 import { navigate } from '../actions/navigation'
+import { setEditDeckVisibility } from '../actions/modals'
+import { setConfirmState } from '../actions/confirmer'
 
 class DeckSummary extends Component {
   static propTypes = {
-    title: PropTypes.string.isRequired,
-    numTotal: PropTypes.number.isRequired,
-    isInEditMode: PropTypes.bool.isRequired,
+    deck: PropTypes.object.isRequired,
     id: PropTypes.string.isRequired,
+    isInEditMode: PropTypes.bool.isRequired,
     setActiveDeck: PropTypes.func.isRequired,
-    navigate: PropTypes.func.isRequired
+    navigate: PropTypes.func.isRequired,
+    setEditDeckVisibility: PropTypes.func.isRequired,
+    setConfirmState: PropTypes.func.isRequired
   }
 
   onPressEdit = () => {
-    alert(`Edit Pressed for ${this.props.id}`)
+    this.props.setActiveDeck(this.props.deck.id)
+    this.props.setEditDeckVisibility(true)
   }
 
   onPressDelete = () => {
-    alert('Delete Pressed')
+    const {deck, id} = this.props
+    this.props.setConfirmState({
+      isVisible: true,
+      title: 'Delete?',
+      message: `Are you sure you want to delete the deck "${deck.title}"?`,
+      data: {
+        deckId: id,
+        cardIdList: deck.defaultOrder
+      }
+    })
   }
 
   onPress = () => {
     this.props.setActiveDeck(this.props.id)
-    this.props.navigate('QuizFront', {title: this.props.title})
+    this.props.navigate('QuizFront', {title: this.props.deck.title})
   }
 
   render(){
 
-    const {title, numTotal, isInEditMode} = this.props
+    const {deck, isInEditMode} = this.props
 
     return (
       <ListItem
-        title={title}
-        subtitle={`${numTotal} Questions`}
+        title={deck.title}
+        subtitle={`${deck.defaultOrder.length} Questions`}
         onPress={this.onPress}
         underlayColor={lightBlue}
-        leftIcon={isInEditMode &&
+        leftIcon={isInEditMode ?
           <Icon
             name='pencil'
             size={18}
             type='font-awesome'
             iconStyle={[styles.icon, styles.shadow]}
             onPress={this.onPressEdit}
-          />
+          /> : {}
         }
-        rightIcon={isInEditMode &&
+        rightIcon={isInEditMode ?
           <Icon
             name='delete'
             iconStyle={[styles.icon, styles.shadow]}
             onPress={this.onPressDelete}
-          />
+          /> : {}
         }
       />
     )
@@ -82,7 +95,9 @@ const styles = StyleSheet.create({
 
 const mapDispatchToProps = {
   setActiveDeck,
-  navigate
+  navigate,
+  setEditDeckVisibility,
+  setConfirmState
 }
 
 export default connect(null, mapDispatchToProps)(DeckSummary)

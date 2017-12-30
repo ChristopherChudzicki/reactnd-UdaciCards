@@ -84,6 +84,20 @@ export function deleteCardAsync({cardId, deckId}){
   )
 }
 
+export function deleteDeckAsync({deckId, cardIdList}){
+  return fetchDecksAsync().then(
+    decks => AsyncStorage.setItem(DECK_STORAGE_KEY, JSON.stringify(
+      omit(decks, deckId)
+    ))
+  ).then(
+    fetchCardsAsync().then(
+      cards => AsyncStorage.setItem(CARD_STORAGE_KEY, JSON.stringify(
+        omit(cards, cardIdList)
+      ))
+    )
+  )
+}
+
 export function clearDecksAsync(){
   return AsyncStorage.removeItem(DECK_STORAGE_KEY)
 }

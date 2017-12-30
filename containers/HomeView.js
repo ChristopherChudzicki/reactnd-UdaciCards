@@ -6,11 +6,14 @@ import DeckSummaries from '../components/DeckSummaries'
 import PropTypes from 'prop-types'
 import { setNewDeckVisibility } from '../actions/modals'
 import { setActiveDeck } from '../actions/quiz'
-import { addDeck } from '../actions/decks'
+import { addDeck, deleteDeck } from '../actions/decks'
 import { clearDecksAsync } from '../utils/api'
-import AddDeckButton from '../components/AddDeckButton'
-import NewDeckForm  from '../components/NewDeckForm'
+import { deckListSorter } from '../utils/misc'
+import ControlButtons from '../components/ControlButtons'
+import EditDeckForm  from '../components/EditDeckForm'
 import Modal from '../components/Modal';
+import EditDeckContainer from './EditDeckContainer'
+import ConfirmationContainer from './ConfirmationContainer'
 
 class HomeView extends Component {
 
@@ -19,43 +22,66 @@ class HomeView extends Component {
     deckList: PropTypes.array.isRequired,
     setActiveDeck: PropTypes.func.isRequired,
     addDeck: PropTypes.func.isRequired,
-    setNewDeckVisibility: PropTypes.func.isRequired
+    setNewDeckVisibility: PropTypes.func.isRequired,
+    activeDeckId: PropTypes.string,
+    deleteDeck: PropTypes.func.isRequired
   }
 
   static navigationOptions = {
     title: 'Home'
   }
 
-  showModal = () => this.props.setNewDeckVisibility(true)
+  state = {
+    isInEditMode: false
+  }
 
-  hideModal = () => this.props.setNewDeckVisibility(false)
+  showNewDeckModal = () => this.props.setNewDeckVisibility(true)
+
+  hideNewDeckModal = () => this.props.setNewDeckVisibility(false)
+
+  onDeleteConfirmed = ({cardIdList, deckId}) => {
+    this.props.deleteDeck({deckId, cardIdList})
+  }
+
+  toggleEditMode = () => {
+    this.setState({isInEditMode: !this.state.isInEditMode})
+  }
 
   render(){
+
+    const {isInEditMode} = this.state
 
     return (
       <View style={styles.container}>
         <DeckSummaries
-          isInEditMode={true}
+          isInEditMode={isInEditMode}
           deckList={this.props.deckList}
-          onPressDeck={this.onPressDeckHandler}
-          onPressSettings={(id)=>alert(`Settings for Deck ${id}`)}
-          editMode={true}
         />
         <Button
           title={'Clear App DB'}
           raised
           Component={TouchableOpacity}
           onPress={clearDecksAsync}
+          containerViewStyle={styles.clearButton}
+        />
+        <ControlButtons
+          onPressAdd={this.showNewDeckModal}
+          onPressEdit={this.toggleEditMode}
         />
         <Modal
           open={this.props.isNewDeckVisible}
-          modalDidClose={this.hideModal}>
-          <NewDeckForm
+          modalDidClose={this.hideNewDeckModal}>
+          <EditDeckForm
+            title='New Deck'
             onPressSubmit={this.props.addDeck}
-            onPressCancel={this.hideModal}
+            onPressCancel={this.hideNewDeckModal}
+            submitLabel='Create'
           />
         </Modal>
-        <AddDeckButton onPress={this.showModal} />
+        {this.props.activeDeckId && <EditDeckContainer />}
+        <ConfirmationContainer
+          onConfirm={this.onDeleteConfirmed}
+        />
       </View>
     )
   }
@@ -64,25 +90,19 @@ class HomeView extends Component {
 const styles = StyleSheet.create({
   container:{
     flex:1,
-    justifyContent:'space-between'
+    // justifyContent: 'space-between'
+  },
+  clearButton: {
+    marginTop:20,
+    marginBottom:40,
+    width:150,
+    alignSelf:'center'
   }
 })
 
-function deckListSorter(deckA, deckB){
-  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
-  if (deckA.title < deckB.title){
-    return -1
-  }
-  if (deckA.title > deckB.title){
-    return 1
-  }
-  else {
-    return 0
-  }
-}
-
-const mapStateToProps = ({decks, modals}) => ({
+const mapStateToProps = ({decks, quiz, modals}) => ({
   isNewDeckVisible: modals.isNewDeckVisible,
+  activeDeckId: quiz.activeDeckId,
   deckList: Object.keys(decks).map(
     id => ({...decks[id], id})
   ).sort(deckListSorter)
@@ -91,7 +111,8 @@ const mapStateToProps = ({decks, modals}) => ({
 const mapDispatchToProps = {
   setActiveDeck,
   addDeck,
-  setNewDeckVisibility
+  setNewDeckVisibility,
+  deleteDeck
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeView)

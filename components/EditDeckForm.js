@@ -4,17 +4,26 @@ import { Button, FormLabel, FormInput, FormValidationMessage } from 'react-nativ
 import { white, blue, darkGray } from '../utils/colors'
 import UpperRightCloseButton from './UpperRightCloseButton'
 import PropTypes from 'prop-types'
+import { uuid } from 'lodash-uuid'
 
-
-export default class AddDeckForm extends Component {
+export default class EditDeckForm extends Component {
 
   static propTypes = {
     onPressSubmit: PropTypes.func.isRequired,
-    onPressCancel: PropTypes.func.isRequired
+    onPressCancel: PropTypes.func.isRequired,
+    deckId: PropTypes.string,
+    title: PropTypes.string.isRequired,
+    initialName: PropTypes.string.isRequired,
+    submitLabel: PropTypes.string.isRequired
+  }
+
+  static defaultProps = {
+    initialName: ''
   }
 
   componentDidMount = ()=>{
     this._input.focus()
+    this.setState({name: this.props.initialName})
   }
 
   state = {
@@ -29,7 +38,10 @@ export default class AddDeckForm extends Component {
       this._input.shake()
     }
     else {
-      this.props.onPressSubmit(this.state.name)
+      this.props.onPressSubmit({
+        title: this.state.name,
+        deckId: this.props.deckId ? this.props.deckId : uuid()
+      })
       this.props.onPressCancel()
     }
   }
@@ -41,7 +53,9 @@ export default class AddDeckForm extends Component {
         behavior='position'
         style={styles.container}
       >
-        <Text style={styles.title}>New Deck</Text>
+        <Text style={styles.title}>
+          {this.props.title}
+        </Text>
         <UpperRightCloseButton onPress={this.props.onPressCancel}/>
         <FormLabel>Deck Name</FormLabel>
         <FormInput
@@ -58,7 +72,7 @@ export default class AddDeckForm extends Component {
         <Button
           containerViewStyle={styles.buttonContainerStyle}
           buttonStyle={styles.button}
-          title='Create'
+          title={this.props.submitLabel}
           onPress={this.submitHandler}
         />
       </KeyboardAvoidingView>
