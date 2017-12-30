@@ -5,7 +5,11 @@ import Modal from '../components/Modal'
 import EditCardForm from '../components/EditCardForm'
 import PropTypes from 'prop-types'
 import QuizFrontPage from '../components/QuizFrontPage'
-import { toggleRandomizeQuestionOrder, setQuizOrder } from '../actions/quiz'
+import {
+  toggleRandomizeQuestionOrder,
+  setQuizOrder,
+  updateStudyNotification
+} from '../actions/quiz'
 import { addCard } from '../actions/cards'
 import { setNewCardVisibility } from '../actions/modals'
 import shuffle from 'shuffle-array'
@@ -31,7 +35,8 @@ class QuizFrontView extends Component {
     addCard: PropTypes.func.isRequired,
     activeDeckId: PropTypes.string.isRequired,
     isNewCardVisible: PropTypes.bool.isRequired,
-    setNewCardVisibility: PropTypes.func.isRequired
+    setNewCardVisibility: PropTypes.func.isRequired,
+    updateStudyNotification: PropTypes.func.isRequired
   }
 
   static navigationOptions = ({navigation}) => ({
@@ -48,6 +53,7 @@ class QuizFrontView extends Component {
       shuffle(order)
     }
     this.props.setQuizOrder(order)
+    this.props.updateStudyNotification()
     this.props.navigate('QuizContent', {'title': this.props.title})
   }
 
@@ -104,7 +110,8 @@ const mapDispatchToProps = {
   setQuizOrder,
   addCard,
   setNewCardVisibility,
-  navigate
+  navigate,
+  updateStudyNotification
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuizFrontView)

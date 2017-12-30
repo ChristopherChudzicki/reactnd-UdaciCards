@@ -1,9 +1,35 @@
 import { AsyncStorage } from 'react-native'
 import { generateDummyDecks } from './seed.js'
+import { Notifications, Permissions } from 'expo'
 import omit from 'lodash.omit'
 
-export const DECK_STORAGE_KEY = 'UdaciCards:decks'
-export const CARD_STORAGE_KEY = 'UdaciCards:cards'
+const RUN_BEFORE_KEY = 'UdaciCards:runBefore'
+const DECK_STORAGE_KEY = 'UdaciCards:decks'
+const CARD_STORAGE_KEY = 'UdaciCards:cards'
+const NOTIFICATION_KEY = 'UdaciCards:notifications'
+
+export function isAppPristineAsync() {
+  return AsyncStorage.getItem(RUN_BEFORE_KEY)
+  .then(JSON.parse)
+  .then( data => {
+    if (data === null){
+      AsyncStorage.setItem(RUN_BEFORE_KEY, JSON.stringify({
+        'hasRunBefore': true
+      }) )
+      return true
+    }
+    else {
+      return false
+    }
+  }
+)}
+
+export function clearAllAsync(){
+  return clearLocalNotificationAsync()
+    .then( () => AsyncStorage.removeItem(DECK_STORAGE_KEY))
+    .then( () => AsyncStorage.removeItem(CARD_STORAGE_KEY))
+    .then( () => AsyncStorage.removeItem(RUN_BEFORE_KEY))
+}
 
 export function fetchDecksAsync() {
   return AsyncStorage.getItem(DECK_STORAGE_KEY).then( JSON.parse )
@@ -98,13 +124,62 @@ export function deleteDeckAsync({deckId, cardIdList}){
   )
 }
 
-export function clearDecksAsync(){
-  return AsyncStorage.removeItem(DECK_STORAGE_KEY)
-}
-
-export function resetStorageToDummy(){
+export function resetStorage(){
   const {decks, cards} = generateDummyDecks()
   AsyncStorage.setItem(DECK_STORAGE_KEY, JSON.stringify(decks))
   AsyncStorage.setItem(CARD_STORAGE_KEY, JSON.stringify(cards))
+  clearLocalNotificationAsync().then(setLocalNotificationAsync)
   return {decks, cards}
+}
+
+export function clearLocalNotificationAsync() {
+  return AsyncStorage.removeItem(NOTIFICATION_KEY)
+    .then(Notifications.cancelAllScheduledNotificationsAsync)
+}
+
+function createNotification() {
+  return {
+    title: 'Study!',
+    body: "👋 don't forget to study today!",
+    ios: {
+      sound: true,
+    },
+    android: {
+      sound: true,
+      priority: 'high',
+      sticky: false,
+      vibrate: true,
+    }
+  }
+}
+
+export function setLocalNotificationAsync() {
+  return AsyncStorage.getItem(NOTIFICATION_KEY)
+    .then(JSON.parse)
+    .then((data) => {
+      if (data === null) {
+        Permissions.askAsync(Permissions.NOTIFICATIONS)
+          .then(({ status }) => {
+            alert(status)
+            if (status === 'granted') {
+              Notifications.cancelAllScheduledNotificationsAsync()
+
+              let time = new Date()
+              time.setDate(time.getDate() + 1)
+              time.setHours(22)
+              time.setMinutes(31)
+
+              Notifications.scheduleLocalNotificationAsync(
+                createNotification(),
+                {
+                  time: time,
+                  repeat: 'day',
+                }
+              )
+
+              AsyncStorage.setItem(NOTIFICATION_KEY, JSON.stringify(true))
+            }
+          })
+      }
+    })
 }

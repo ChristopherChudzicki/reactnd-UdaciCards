@@ -11,7 +11,7 @@ import { receiveDecks } from './actions/decks'
 import { receiveCards } from './actions/cards'
 import {
   fetchDecksAsync,
-  resetStorageToDummy,
+  resetStorage,
   fetchCardsAsync
   } from './utils/api'
 import { white, darkBlue } from './utils/colors'
@@ -77,13 +77,14 @@ const ConnectedAppWithNavStore = connect(mapStateToProps)(AppWithNavStore)
 export default class App extends Component {
 
   componentDidMount(){
+
     fetchDecksAsync()
       .then(decks => {
         fetchCardsAsync()
           .then(cards => {
             if (decks === null || cards === null ){
               alert('Seeding Local Storage')
-              return resetStorageToDummy() // returns {decks, cards}
+              return resetStorage() // returns {decks, cards}
             }
             return {decks, cards}
           })

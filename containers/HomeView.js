@@ -7,7 +7,7 @@ import PropTypes from 'prop-types'
 import { setNewDeckVisibility } from '../actions/modals'
 import { setActiveDeck } from '../actions/quiz'
 import { addDeck, deleteDeck } from '../actions/decks'
-import { clearDecksAsync } from '../utils/api'
+import { resetStorage } from '../utils/api'
 import { deckListSorter } from '../utils/misc'
 import ControlButtons from '../components/ControlButtons'
 import EditDeckForm  from '../components/EditDeckForm'
@@ -61,7 +61,7 @@ class HomeView extends Component {
           title={'Clear App DB'}
           raised
           Component={TouchableOpacity}
-          onPress={clearDecksAsync}
+          onPress={resetStorage}
           containerViewStyle={styles.clearButton}
         />
         <ControlButtons

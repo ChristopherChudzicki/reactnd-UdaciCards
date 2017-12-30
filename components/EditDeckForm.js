@@ -50,7 +50,7 @@ export default class EditDeckForm extends Component {
     return (
       <KeyboardAvoidingView
         keyboardVerticalOffset={65}
-        behavior='position'
+        behavior='padding'
         style={styles.container}
       >
         <Text style={styles.title}>
