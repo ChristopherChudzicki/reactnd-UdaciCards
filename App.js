@@ -1,78 +1,16 @@
 import React, { Component } from 'react'
-import { connect, Provider } from 'react-redux'
+import { Provider } from 'react-redux'
 import getStore from './store'
-
-import { StackNavigator, addNavigationHelpers} from 'react-navigation'
-import HomeView from './containers/HomeView'
-import QuizFrontView from './containers/QuizFrontView'
-import QuizContentView from './containers/QuizContentView'
-import QuizEditorView from './containers/QuizEditorView'
+import ConnectedAppNavigator, { navReducer } from './containers/ConnectedAppNavigator'
 import { receiveDecks } from './actions/decks'
 import { receiveCards } from './actions/cards'
 import {
   fetchDecksAsync,
   resetStorage,
   fetchCardsAsync
-  } from './utils/api'
-import { white, darkBlue } from './utils/colors'
-import PropTypes from 'prop-types'
-
-// For connecting redux to AppNavigator, I followed
-// https://medium.com/modus-create-front-end-development/using-react-navigation-and-redux-in-your-react-native-application-efac33265138
-
-const AppNavigator = StackNavigator({
-  Home: {
-    screen: HomeView
-  },
-  QuizFront: {
-    screen: QuizFrontView
-  },
-  QuizContent: {
-    screen: QuizContentView
-  },
-  QuizEditor: {
-    screen: QuizEditorView
-  }
-}, {
-  initialRouteName: 'Home',
-  navigationOptions: {
-    headerStyle:{backgroundColor:darkBlue},
-    gesturesEnabled: false,
-    headerTintColor: white,
-    headerBackTitle: null,
-  }
-})
-
-const navReducer = (state, action) => {
-  const newState = AppNavigator.router.getStateForAction(action, state);
-  return newState || state;
-};
+} from './utils/api'
 
 const store = getStore(navReducer)
-
-class AppWithNavStore extends Component {
-  static propTypes = {
-    dispatch: PropTypes.func.isRequired,
-    navigation: PropTypes.object.isRequired
-  }
-
-  render() {
-    return (
-      <AppNavigator
-        navigation={addNavigationHelpers({
-          dispatch: this.props.dispatch,
-          state: this.props.navigation
-        })}
-      />
-    );
-  }
-}
-
-const mapStateToProps = state => ({
-  navigation: state.navigation
-})
-
-const ConnectedAppWithNavStore = connect(mapStateToProps)(AppWithNavStore)
 
 export default class App extends Component {
 
@@ -98,7 +36,7 @@ export default class App extends Component {
   render() {
     return (
         <Provider store={store}>
-          <ConnectedAppWithNavStore/>
+          <ConnectedAppNavigator/>
         </Provider>
     );
   }

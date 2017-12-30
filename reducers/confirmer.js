@@ -20,7 +20,8 @@ const initialState = {
 export default function confirmer(state=initialState, {type, payload}){
   switch(type){
     case SET_CONFIRM_STATE:
-    return {...state,
+    return {
+      ...state,
       [payload.id]: {
         ...state[payload.id],
         ...payload
