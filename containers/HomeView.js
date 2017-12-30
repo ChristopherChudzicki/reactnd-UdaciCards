@@ -30,7 +30,8 @@ class HomeView extends Component {
   }
 
   static navigationOptions = {
-    title: 'Home'
+    title: 'Home',
+    headerRight: null
   }
 
   state = {
