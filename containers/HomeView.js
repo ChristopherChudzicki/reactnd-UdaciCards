@@ -6,6 +6,7 @@ import DeckSummaries from '../components/DeckSummaries'
 import PropTypes from 'prop-types'
 import { setNewDeckVisibility } from '../actions/modals'
 import { setActiveDeck } from '../actions/quiz'
+import { navigate } from '../actions/navigation'
 import { addDeck, deleteDeck } from '../actions/decks'
 import { resetStorage } from '../utils/api'
 import { deckListSorter } from '../utils/misc'
@@ -24,7 +25,8 @@ class HomeView extends Component {
     addDeck: PropTypes.func.isRequired,
     setNewDeckVisibility: PropTypes.func.isRequired,
     activeDeckId: PropTypes.string,
-    deleteDeck: PropTypes.func.isRequired
+    deleteDeck: PropTypes.func.isRequired,
+    navigate: PropTypes.func.isRequired
   }
 
   static navigationOptions = {
@@ -38,6 +40,12 @@ class HomeView extends Component {
   showNewDeckModal = () => this.props.setNewDeckVisibility(true)
 
   hideNewDeckModal = () => this.props.setNewDeckVisibility(false)
+
+  createDeck = ({title, deckId}) => {
+    this.props.addDeck({title, deckId})
+    this.props.setActiveDeck(deckId)
+    this.props.navigate('QuizFront', {title: title})
+  }
 
   onDeleteConfirmed = ({cardIdList, deckId}) => {
     this.props.deleteDeck({deckId, cardIdList})
@@ -73,7 +81,7 @@ class HomeView extends Component {
           modalDidClose={this.hideNewDeckModal}>
           <EditDeckForm
             title='New Deck'
-            onPressSubmit={this.props.addDeck}
+            onPressSubmit={this.createDeck}
             onPressCancel={this.hideNewDeckModal}
             submitLabel='Create'
           />
@@ -100,20 +108,20 @@ const styles = StyleSheet.create({
   }
 })
 
-const mapStateToProps = ({decks, quiz, modals, navigation}) => ({
+const mapStateToProps = ({decks, quiz, modals}) => ({
   isNewDeckVisible: modals.isNewDeckVisible,
   activeDeckId: quiz.activeDeckId,
   deckList: Object.keys(decks).map(
     id => ({...decks[id], id})
-  ).sort(deckListSorter),
-  stateNav: navigation
+  ).sort(deckListSorter)
 })
 
 const mapDispatchToProps = {
   setActiveDeck,
   addDeck,
   setNewDeckVisibility,
-  deleteDeck
+  deleteDeck,
+  navigate
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeView)
