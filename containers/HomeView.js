@@ -69,7 +69,7 @@ class HomeView extends Component {
           onPressEdit={this.toggleEditMode}
         />
         <Modal
-          open={this.props.isNewDeckVisible}
+          visible={this.props.isNewDeckVisible}
           modalDidClose={this.hideNewDeckModal}>
           <EditDeckForm
             title='New Deck'

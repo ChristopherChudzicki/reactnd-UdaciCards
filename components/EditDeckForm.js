@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { KeyboardAvoidingView, Text, StyleSheet } from 'react-native'
+import { View, KeyboardAvoidingView, Text, StyleSheet } from 'react-native'
 import { Button, FormLabel, FormInput, FormValidationMessage } from 'react-native-elements'
 import { white, blue, darkGray } from '../utils/colors'
 import UpperRightCloseButton from './UpperRightCloseButton'
@@ -51,30 +51,32 @@ export default class EditDeckForm extends Component {
       <KeyboardAvoidingView
         keyboardVerticalOffset={65}
         behavior='padding'
-        style={styles.container}
       >
-        <Text style={styles.title}>
-          {this.props.title}
-        </Text>
-        <UpperRightCloseButton onPress={this.props.onPressCancel}/>
-        <FormLabel>Deck Name</FormLabel>
-        <FormInput
-          ref={input => this._input = input}
-          value={this.state.name}
-          onChangeText={text => this.setState({name:text})}
-        />
-        {
-          this.state.isNameErrorVisible &&
-          <FormValidationMessage>
-            Deck name cannot be empty
-          </FormValidationMessage>
-        }
-        <Button
-          containerViewStyle={styles.buttonContainerStyle}
-          buttonStyle={styles.button}
-          title={this.props.submitLabel}
-          onPress={this.submitHandler}
-        />
+        <View style={styles.container}>
+          <Text style={styles.title}>
+            {this.props.title}
+          </Text>
+          <UpperRightCloseButton onPress={this.props.onPressCancel}/>
+          <FormLabel>Deck Name</FormLabel>
+          <FormInput
+            ref={input => this._input = input}
+            value={this.state.name}
+            onChangeText={text => this.setState({name:text})}
+          />
+          {
+            this.state.isNameErrorVisible &&
+            <FormValidationMessage>
+              Deck name cannot be empty
+            </FormValidationMessage>
+          }
+          <Button
+            containerViewStyle={styles.buttonContainerStyle}
+            buttonStyle={styles.button}
+            title={this.props.submitLabel}
+            onPress={this.submitHandler}
+          />
+        </View>
+
       </KeyboardAvoidingView>
     )
   }

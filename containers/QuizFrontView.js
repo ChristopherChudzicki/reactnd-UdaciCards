@@ -76,7 +76,7 @@ class QuizFrontView extends Component {
           onPressEditQuiz={this.onPressEditQuiz}
         />
         <Modal
-          open={this.props.isNewCardVisible}
+          visible={this.props.isNewCardVisible}
           modalDidClose={this.hideModal}>
           <EditCardForm
             deckId={this.props.activeDeckId}
