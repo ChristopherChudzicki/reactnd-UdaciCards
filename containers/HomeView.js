@@ -89,8 +89,7 @@ class HomeView extends Component {
 
 const styles = StyleSheet.create({
   container:{
-    flex:1,
-    // justifyContent: 'space-between'
+    flex:1
   },
   clearButton: {
     marginTop:20,
